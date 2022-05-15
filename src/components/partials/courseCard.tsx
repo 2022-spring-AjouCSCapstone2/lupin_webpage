@@ -2,20 +2,26 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
+import {   
+  Link as RouterLink,
+ } from 'react-router-dom';
 
 interface CourseDataProps {
     courseData: {
+        id: number,
         title: string,
         professor: string,
         classroom: string,
         time: string,
-    }    
+    };    
 };
 
 export default function LectureCard({courseData}: CourseDataProps) {
-  const {title, professor, classroom, time} = courseData;
+  const {id, title, professor, classroom, time} = courseData;
   return (
     <Button
+      component={RouterLink}
+      to={`/courses/${id}`}
       sx={{
           mb: 1,
           p: 0,

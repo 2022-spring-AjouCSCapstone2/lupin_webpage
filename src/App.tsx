@@ -8,8 +8,9 @@ import {
 import Home from './components/home';
 import Profile from './components/profile';
 import Courses from './components/courses';
+import CourseDetails from './components/courseDetails';
 
-function App() {
+export default function App() {
   return (
     <div>
       <Router>
@@ -17,20 +18,13 @@ function App() {
         <Container
           sx={{ mt: 2 }}>
                 <Switch>
-                    <Route path="/" exact>
-                      <Home />
-                    </Route>
-                    <Route path="/profile" exact>
-                      <Profile />
-                    </Route>
-                    <Route path="/courses" exact>
-                      <Courses />
-                    </Route>
+                    <Route path="/" exact component={Home} />
+                    <Route path="/profile" exact component={Profile} />
+                    <Route path="/courses" exact component={Courses} />
+                    <Route path="/courses/:id" component={CourseDetails} />
                 </Switch>
         </Container>   
       </Router>
     </div>
   );
 }
-
-export default App;

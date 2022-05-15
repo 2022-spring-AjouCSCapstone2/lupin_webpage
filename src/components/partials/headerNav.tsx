@@ -69,7 +69,7 @@ export default function HeaderNav() {
               fontFamily: 'Jua',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: '#166ecc',
               textDecoration: 'none',
             }}
           >
@@ -89,10 +89,10 @@ export default function HeaderNav() {
                   mt: 0.5,
                   ml: 3,
                   backgroundColor: 'inherit',
-                  color: '#a8a8a8',
+                  color: '#92afce',
                   fontFamily: 'Jua',
                   textTransform: 'none',
-                  display: 'block',
+                  display: 'flex',
                   boxShadow: 'none',
                   '&:hover': {
                     backgroundColor: 'inherit',
@@ -116,7 +116,7 @@ export default function HeaderNav() {
               onClick={handleOpenNavMenu}
               color="inherit"
             >
-              <MenuIcon />
+              <MenuIcon sx={{ color: '#166ecc' }}/>
             </IconButton>
             {/* Menu */}
             <Menu
@@ -181,7 +181,7 @@ export default function HeaderNav() {
               fontFamily: 'Jua',
               fontWeight: 700,
               letterSpacing: '.3rem',
-              color: 'inherit',
+              color: '#166ecc',
               textDecoration: 'none',
             }}
           >
