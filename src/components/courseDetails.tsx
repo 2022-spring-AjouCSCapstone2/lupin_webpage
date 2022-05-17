@@ -5,8 +5,8 @@ interface MatchParams {
 }
 
 export default function courseDetails({ match }: RouteComponentProps<MatchParams>) {
-    const { id } = match.params;
-    console.log(id);
+    const { params: { id }, path } = match;
+    console.log(id, path);
     return(
         <div>Details</div>
     );

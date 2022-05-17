@@ -1,29 +1,32 @@
-import Container from '@mui/material/Container';
-import HeaderNav from './components/partials/headerNav';
 import {
   Route,
   Switch,
   BrowserRouter as Router,
 } from 'react-router-dom';
-import Home from './components/home';
-import Profile from './components/profile';
-import Courses from './components/courses';
-import CourseDetails from './components/courseDetails';
+import Box from "@mui/material/Box";
+import HeaderNav from './components/partials/HeaderNav';
+import Home from './components/Home';
+import Profile from './components/Profile';
+import Courses from './components/Courses';
+import CourseDetails from './components/CourseDetails';
+import Footer from './components/partials/Footer';
+import ScrollToTop from './components/modules/ScrollToTop';
 
 export default function App() {
   return (
     <div>
       <Router>
+        <ScrollToTop />
         <HeaderNav />
-        <Container
-          sx={{ mt: 2 }}>
-                <Switch>
-                    <Route path="/" exact component={Home} />
-                    <Route path="/profile" exact component={Profile} />
-                    <Route path="/courses" exact component={Courses} />
-                    <Route path="/courses/:id" component={CourseDetails} />
-                </Switch>
-        </Container>   
+        <Box sx={{ mt: 8, pb: 10, backgroundColor: '#f9fafb' }}>
+          <Switch>
+              <Route path="/" exact component={Home} />
+              <Route path="/profile" exact component={Profile} />
+              <Route path="/courses" exact component={Courses} />
+              <Route path="/courses/:id" component={CourseDetails} />
+          </Switch>
+        </Box>
+        <Footer />
       </Router>
     </div>
   );

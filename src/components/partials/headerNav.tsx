@@ -20,8 +20,12 @@ const pages = [
     route: '/',
   },
   {
-    name: '수업',
+    name: '내 수업',
     route: '/courses',
+  },
+  {
+    name: '소개',
+    route: '#',
   }
 ];
 
@@ -56,10 +60,17 @@ export default function HeaderNav() {
   };
 
   return (
-    <AppBar position="static" sx={{ backgroundColor: 'white'}}>
+    <AppBar
+      position="fixed"
+      sx={{
+        backgroundColor: 'white',
+        zIndex: 100,
+        boxShadow: 'none',
+        borderBottom: '2px solid #e8e5e5'
+        }}>
       <Container sx={{ color: 'black'}}>
         <Toolbar disableGutters>
-          {/* Title Banner */}
+          {/* Site Title */}
           <Typography
             variant="h6"
             noWrap
@@ -79,29 +90,26 @@ export default function HeaderNav() {
           {/* Menu Tabs */}
           <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
             {pages.map((page) => (
-              <Button
+              <Typography
                 key={page.name}
                 onClick={handleCloseNavMenu}
-                variant="contained"
                 component={RouterLink}
                 to={page.route}
                 sx={{ 
-                  mt: 0.5,
-                  ml: 3,
+                  ml: 5,
                   backgroundColor: 'inherit',
                   color: '#92afce',
                   fontFamily: 'Jua',
                   textTransform: 'none',
-                  display: 'flex',
-                  boxShadow: 'none',
+                  textDecoration: 'none',
+                  display: 'block',
                   '&:hover': {
-                    backgroundColor: 'inherit',
-                    boxShadow: 'none'
+                    color: '#5c8abc'
                   },
                 }}
               >
                 {page.name}           
-              </Button>   
+              </Typography>   
             ))}        
           </Box>
 
@@ -139,38 +147,27 @@ export default function HeaderNav() {
             >
               {pages.map((page) => (
                 <MenuItem key={page.name} onClick={handleCloseNavMenu}>
-                  <Button
+                  <Typography
                     key={page.name}
                     onClick={handleCloseNavMenu}
-                    variant="contained"
                     component={RouterLink}
                     to={page.route}
                     sx={{ 
-                      color: 'black',
-                      fontFamily: 'Jua',
+                      color: 'inherit',
                       textTransform: 'none',
+                      textDecoration: 'none',
                       display: 'block',
-                      p: 0,
-                      boxShadow: 'none',
-                      backgroundColor: 'inherit',
-                      '&:hover': {
-                        backgroundColor: 'transparent',
-                        boxShadow: 'none'
-                      },
+                      backgroundColor: 'transparent'
                     }}
                   >
-                  <Typography
-                      sx={{ textAlign: 'left' }}
-                  >
                     {page.name}
-                  </Typography>
-                  </Button>   
+                  </Typography>   
                 </MenuItem>
               ))}
             </Menu>
           </Box>
 
-          {/* Title Banner */}
+          {/* Site Title */}
           <Typography
             variant="h5"
             noWrap
@@ -218,36 +215,21 @@ export default function HeaderNav() {
             >
               {settings.map((setting) => (
                 <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                  <Button
+                  <Typography
                     key={setting.name}
                     onClick={handleCloseNavMenu}
-                    variant="contained"
                     component={RouterLink}
                     to={setting.route}
                     sx={{ 
                       color: 'inherit',
-                      fontFamily: 'Jua',
                       textTransform: 'none',
+                      textDecoration: 'none',
                       display: 'block',
-                      p: 0,
-                      backgroundColor: 'inherit',
-                      boxShadow: 'none',
-                      '&:hover': {
-                        backgroundColor: 'transparent',
-                        boxShadow: 'none'
-                      },
-                      '&:active': {
-                        backgroundColor: 'transparent',
-                        boxShadow: 'none'
-                      },
+                      backgroundColor: 'transparent'
                     }}
                   >
-                    <Typography
-                      sx={{ textAlign: 'left' }}
-                    >
-                        {setting.name}
-                    </Typography>
-                  </Button>
+                    {setting.name}
+                  </Typography>   
                 </MenuItem>
               ))}
             </Menu>

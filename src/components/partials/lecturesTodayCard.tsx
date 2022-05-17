@@ -2,10 +2,14 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import { CardActions } from '@mui/material';
+import CardActions from '@mui/material/CardActions';
+import {   
+  Link as RouterLink,
+ } from 'react-router-dom';
 
 interface CourseDataProps {
     courseData: {
+        id: number,
         title: string,
         professor: string,
         classroom: string,
@@ -15,7 +19,7 @@ interface CourseDataProps {
 };
 
 export default function LectureCard({courseData}: CourseDataProps) {
-  const {title, professor, classroom, time, classOpen} = courseData;
+  const {id, title, professor, classroom, time, classOpen} = courseData;
   return (
       <Card
       sx={{ minWidth: 275, p: 1, mb: 1 }}>
@@ -37,19 +41,25 @@ export default function LectureCard({courseData}: CourseDataProps) {
           </CardContent>
           <CardActions
             sx={{ display: 'flex', justifyContent: 'space-between' }}>
-            <Button variant="text">더보기</Button>
+            <Button
+            variant="text"
+            component={RouterLink}
+            to={`/courses/${id}`}
+            >
+              더보기
+            </Button>
             {
               classOpen
               ? <Button
                   variant="contained"
-                  sx={{ width: '15%' }}>
-                    수업 참가하기
+                  sx={{ width: '22%' }}>
+                    참가하기
                 </Button>
               : <Button
                   variant="contained"
                   disabled
-                  sx={{ width: '15%' }}>
-                    50분 뒤 수업 시작
+                  sx={{ width: '22%' }}>
+                    50분 뒤 시작
                 </Button>
             }
           </CardActions>

@@ -12,7 +12,7 @@ import Divider from '@mui/material/Divider';
 export default function Profile() {
     return (
       <Container
-        sx={{ mt: 6, mb: 20 }}>
+        sx={{ pt: 10 }}>
         <Box
           sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Typography
