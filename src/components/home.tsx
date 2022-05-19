@@ -34,7 +34,7 @@ export default function Home() {
             <PageTitleBanner props={pageDataProps} />
             <Container maxWidth="md">
                 {courseData.map((data, index) =><LectureCard key={index} courseData={data}/>)}
-            </Container>        
+            </Container>      
         </Box>
     )
 }
