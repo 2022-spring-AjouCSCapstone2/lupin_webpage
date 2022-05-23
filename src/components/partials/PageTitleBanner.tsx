@@ -5,17 +5,22 @@ import Typography from "@mui/material/Typography";
 interface PropTypes {
     props: {
         title: string,
-        desc: string
+        desc: string,
+        isTabBelow: boolean
     };
 }
 
 export default function PageTitleBanner({ props }: PropTypes) {
-    const { title, desc } = props;
+    const { title, desc, isTabBelow } = props;
+    const mb = isTabBelow ? 0 : 5;
+    console.log(isTabBelow);
+    console.log(mb);
+    const height = isTabBelow ? 276 : 320;
     return(
-        <Box sx={{ backgroundColor: 'white', mb: 5 }}>
+        <Box sx={{ backgroundColor: 'white', mb }}>
             <Container
                 sx={{
-                    height: 320,
+                    height,
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',

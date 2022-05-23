@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import CourseCard from './partials/CourseCard';
-import PageTitleBanner from './partials/PageTitleBanner';
+import CourseCard from '../partials/CourseCard';
+import PageTitleBanner from '../partials/PageTitleBanner';
 
 // fake data
 const courseData = [
@@ -73,7 +73,8 @@ const courseData = [
 
 const pageDataProps = {
     title: '내 수업',
-    desc: '수강 신청한 수업들! 이번 학기도 문제없어!'
+    desc: '수강 신청한 수업들! 이번 학기도 문제없어!',
+    isTabBelow: false
 };
 
 export default function Courses() {

@@ -1,7 +1,7 @@
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import LectureCard from './partials/LecturesTodayCard';
-import PageTitleBanner from './partials/PageTitleBanner';
+import LectureCard from '../partials/LecturesTodayCard';
+import PageTitleBanner from '../partials/PageTitleBanner';
 
 // fake data
 const courseData = [
@@ -25,7 +25,8 @@ const courseData = [
 
 const pageDataProps = {
     title: '오늘의 강의',
-    desc: '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!'
+    desc: '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!',
+    isTabBelow: false
 };
 
 export default function Home() {

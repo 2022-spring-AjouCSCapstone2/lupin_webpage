@@ -4,10 +4,10 @@ import {
 } from 'react-router-dom';
 import Box from "@mui/material/Box";
 import HeaderNav from './partials/HeaderNav';
-import Home from './Home';
-import Profile from './Profile';
-import Courses from './Courses';
-import CourseDetails from './CourseDetails';
+import Home from './pages/Home';
+import Profile from './pages/Profile';
+import Courses from './pages/Courses';
+import CourseDetails from './pages/CourseDetails';
 import Footer from './partials/Footer';
 import ScrollToTop from './modules/ScrollToTop';
 import { Redirect } from 'react-router-dom';
