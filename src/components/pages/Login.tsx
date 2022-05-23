@@ -39,9 +39,13 @@ export default function Login({ signInHandler, loggedIn }: signInProps) {
         };
         axios
             .post('http://3.37.234.117:5000/users/login', body)
-            .then((res) => signInHandler())
+            // .then((res) => signInHandler())
+            .then((res) => {
+                console.log(res);
+                signInHandler();
+            })
             .catch((error) => {
-                alert('Failed to sign in');
+                alert('로그인에 실패했습니다. 로그인 정보를 다시 확인해주세요.');
                 window.location.reload();
             });
     }

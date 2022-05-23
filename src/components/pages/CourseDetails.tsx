@@ -124,20 +124,6 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                                     <Typography sx={{ fontSize: 12, display: 'block' }}>댓글 5</Typography>
                                 </Box>
                             </Box>
-                            <Divider></Divider>
-                            <Box sx={{ py: 3, px: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Typography sx={{ fontSize: 18 }}>2022년 5월 09일 (월)</Typography>
-                            </Box>
-                            <Divider></Divider>
-                            <Box sx={{ py: 3, px: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Typography sx={{ fontSize: 18 }}>2022년 5월 04일 (수)</Typography>
-                                <Button variant="contained">GO</Button>
-                            </Box>
-                            <Divider></Divider>
-                            <Box sx={{ py: 3, px: 5, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                                <Typography sx={{ fontSize: 18 }}>2022년 5월 02일 (월)</Typography>
-                                <Button variant="contained">GO</Button>
-                            </Box>
                         </Card>
                     </Container>
                 </TabPanel>                

@@ -12,6 +12,7 @@ import { Redirect } from 'react-router-dom';
 import { useState } from 'react';
 import {   
   Link as RouterLink,
+  useHistory,
  } from 'react-router-dom';
 import axios from "axios";
 import sha256 from 'crypto-js/sha256';
@@ -20,7 +21,10 @@ interface joinProps {
     loggedIn: boolean
 }
 
-export default function Join({ loggedIn }: joinProps) {
+
+export default function Join({ loggedIn }: joinProps) {    
+    const history = useHistory();
+
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [userId, setUserId] = useState(0);
@@ -28,7 +32,7 @@ export default function Join({ loggedIn }: joinProps) {
     const [phone, setPhone] = useState('');
     const [password, setPassword] = useState('');
     const [pwConfirm, setPwConfirm] = useState('');
-
+    
     const nameHandler = (e: any) => {
         e.preventDefault();
         setName(e.target.value);
@@ -75,9 +79,12 @@ export default function Join({ loggedIn }: joinProps) {
             };
             axios
                 .post('http://3.37.234.117:5000/users/join', body)
-                .then((res) => console.log(res))
+                .then((res) => {
+                    alert('회원가입이 정상적으로 완료되었습니다.');
+                    history.push("/login");
+                })
                 .catch((error) => {
-                    alert('Failed to sign up');
+                    alert('회원가입에 실패했습니다. 가입 정보를 다시 확인해주세요.');
                 });
         }
     }
@@ -100,7 +107,9 @@ export default function Join({ loggedIn }: joinProps) {
                             component={RouterLink}
                             to={'/login'}
                             sx={{
+                                display: 'block',
                                 textAlign: 'center',
+                                textDecoration: 'none',
                                 fontSize: 36,
                                 fontWeight: 700,
                                 mb: 4,

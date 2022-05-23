@@ -12,6 +12,7 @@ import MenuItem from '@mui/material/MenuItem';
 import {   
   Link as RouterLink,
  } from 'react-router-dom';
+ import axios from 'axios';
 
 const pages = [
   {
@@ -28,18 +29,11 @@ const pages = [
   }
 ];
 
-const settings = [
-  {
-    name: '프로필',
-    route: '/profile',
-  },
-  {
-    name: '로그아웃',
-    route: '/logout',
-  }
-];
+interface NavProps {
+  logoutHandler: () => void
+}
 
-export default function HeaderNav() {
+export default function HeaderNav({ logoutHandler }: NavProps) {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
@@ -57,6 +51,16 @@ export default function HeaderNav() {
   const handleCloseUserMenu = () => {
     setAnchorElUser(null);
   };
+
+  const handleLogout = () => {
+   axios
+    .get('http://3.37.234.117:5000/users/logout')
+    .then((res) => {
+      console.log(res);      
+      logoutHandler();
+    })
+    .catch((error) => console.log('error: ', error));
+  }
 
   return (
     <AppBar
@@ -212,25 +216,55 @@ export default function HeaderNav() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem key={setting.name} onClick={handleCloseUserMenu}>
-                  <Typography
-                    key={setting.name}
-                    onClick={handleCloseNavMenu}
-                    component={RouterLink}
-                    to={setting.route}
-                    sx={{ 
-                      color: 'inherit',
-                      textTransform: 'none',
-                      textDecoration: 'none',
-                      display: 'block',
-                      backgroundColor: 'transparent'
-                    }}
-                  >
-                    {setting.name}
-                  </Typography>   
-                </MenuItem>
-              ))}
+              <MenuItem key={'profile'} onClick={handleCloseUserMenu}>
+                <Typography
+                  key={'profile'}
+                  onClick={handleCloseNavMenu}
+                  component={RouterLink}
+                  to={'/profile'}
+                  sx={{ 
+                    color: 'inherit',
+                    textTransform: 'none',
+                    textDecoration: 'none',
+                    display: 'block',
+                    backgroundColor: 'transparent'
+                  }}
+                >
+                  프로필
+                </Typography>   
+              </MenuItem>
+              <MenuItem key={'my-posts'} onClick={handleCloseUserMenu}>
+                <Typography
+                  key={'my-posts'}
+                  onClick={handleCloseNavMenu}
+                  component={RouterLink}
+                  to={'/my-posts'}
+                  sx={{ 
+                    color: 'inherit',
+                    textTransform: 'none',
+                    textDecoration: 'none',
+                    display: 'block',
+                    backgroundColor: 'transparent'
+                  }}
+                >
+                  내 게시물
+                </Typography>   
+              </MenuItem>
+              <MenuItem key={'logout'} onClick={handleCloseUserMenu}>
+                <Typography
+                  key={'profile'}
+                  onClick={handleLogout}
+                  sx={{ 
+                    color: 'inherit',
+                    textTransform: 'none',
+                    textDecoration: 'none',
+                    display: 'block',
+                    backgroundColor: 'transparent'
+                  }}
+                >
+                  로그아웃
+                </Typography>   
+              </MenuItem>
             </Menu>
           </Box>
         </Toolbar>

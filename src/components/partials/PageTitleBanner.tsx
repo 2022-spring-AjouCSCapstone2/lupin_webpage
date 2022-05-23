@@ -13,8 +13,6 @@ interface PropTypes {
 export default function PageTitleBanner({ props }: PropTypes) {
     const { title, desc, isTabBelow } = props;
     const mb = isTabBelow ? 0 : 5;
-    console.log(isTabBelow);
-    console.log(mb);
     const height = isTabBelow ? 276 : 320;
     return(
         <Box sx={{ backgroundColor: 'white', mb }}>
