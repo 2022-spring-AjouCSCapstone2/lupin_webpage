@@ -9,11 +9,11 @@ import PrivateRoute from './components/PrivateRoute';
 
 export default function App() {
   const [loggedIn, setLoggedIn] = useState<boolean>(false);
-  const onSignIn = () => setLoggedIn(true);
+  const signInHandler = () => setLoggedIn(true);
   return (
     <div>
         <Router>
-            <Route path="/login" exact render={() => <Login onSignIn={onSignIn} loggedIn={loggedIn} />} />
+            <Route path="/login" exact render={() => <Login signInHandler={signInHandler} loggedIn={loggedIn} />} />
             <Route path="/join" exact render={() => <Join loggedIn={loggedIn} />} />
             <PrivateRoute loggedIn={loggedIn} />
         </Router>     

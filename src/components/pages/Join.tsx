@@ -9,12 +9,79 @@ import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import NativeSelect from '@mui/material/NativeSelect';
 import { Redirect } from 'react-router-dom';
+import { useState } from 'react';
+import {   
+  Link as RouterLink,
+ } from 'react-router-dom';
+import axios from "axios";
+import sha256 from 'crypto-js/sha256';
 
 interface joinProps {
     loggedIn: boolean
 }
 
 export default function Join({ loggedIn }: joinProps) {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [userId, setUserId] = useState(0);
+    const [userType, setUserType] = useState('STUDENT');
+    const [phone, setPhone] = useState('');
+    const [password, setPassword] = useState('');
+    const [pwConfirm, setPwConfirm] = useState('');
+
+    const nameHandler = (e: any) => {
+        e.preventDefault();
+        setName(e.target.value);
+    }
+    const emailHandler = (e: any) => {
+        e.preventDefault();
+        setEmail(e.target.value);
+    }
+    const userIdHandler = (e: any) => {
+        e.preventDefault();
+        const replaced = e.target.value.replace(/\D/g, '');
+        e.target.value = replaced;
+        setUserId(e.target.value);
+    }
+    const userTypeHandler = (e: any) => {
+        e.preventDefault();
+        setUserType(e.target.value);
+    }
+    const phoneHandler = (e: any) => {
+        e.preventDefault();
+        const replaced = e.target.value.replace(/\D/g, '');
+        e.target.value = replaced;
+        setPhone(e.target.value);
+    }
+    const passwordHandler = (e: any) => {
+        e.preventDefault();
+        setPassword(e.target.value);
+    }
+    const pwConfirmHandler = (e: any) => {
+        e.preventDefault();
+        setPwConfirm(e.target.value);
+    }
+    const submitHandler = (e: any) => {
+        e.preventDefault();
+        if(password !== pwConfirm) alert("비밀번호가 일치하지 않습니다.");
+        else {
+            const body = {
+                userId: Number(userId),
+                name,
+                userType,
+                email,
+                password: sha256(password).toString(),
+                phone
+            };
+            axios
+                .post('http://3.37.234.117:5000/users/join', body)
+                .then((res) => console.log(res))
+                .catch((error) => {
+                    alert('Failed to sign up');
+                });
+        }
+    }
+
     return (
         <Box>
             {
@@ -30,6 +97,8 @@ export default function Join({ loggedIn }: joinProps) {
                     }}>
                         <Container maxWidth="sm" >
                             <Typography
+                            component={RouterLink}
+                            to={'/login'}
                             sx={{
                                 textAlign: 'center',
                                 fontSize: 36,
@@ -43,20 +112,26 @@ export default function Join({ loggedIn }: joinProps) {
                             </Typography>
                             <Card sx={{ py: 2, px: 4 }}>
                                 <CardContent>
-                                    <Box component="form">
+                                    <Box
+                                    component="form"
+                                    onSubmit={submitHandler}
+                                    >
                                         <Box sx={{ display: 'flex', mb: 2 }}>
                                             <TextField
                                             fullWidth
                                             required
                                             id="name"
-                                            name="name"
                                             label="이름"
                                             variant="standard"
+                                            inputProps={{
+                                                maxLength: 30
+                                            }}
+                                            onChange={nameHandler}
                                             sx={{ display: 'block', mr: 4 }}
                                             />
                                             <FormControl fullWidth>
                                                 <InputLabel variant="standard" htmlFor="uncontrolled-native">
-                                                Age
+                                                신분
                                                 </InputLabel>
                                                 <NativeSelect
                                                 defaultValue={30}
@@ -64,6 +139,7 @@ export default function Join({ loggedIn }: joinProps) {
                                                     name: 'userType',
                                                     id: 'userType',
                                                 }}
+                                                onChange={userTypeHandler}
                                                 >
                                                 <option value={'STUDENT'}>학생</option>
                                                 <option value={'PROFESSOR'}>교수</option>
@@ -74,19 +150,22 @@ export default function Join({ loggedIn }: joinProps) {
                                             <TextField
                                             fullWidth
                                             required
-                                            id="schoolId"
-                                            name="schoolId"
-                                            label="학번"
+                                            id="userId"
+                                            label="학번(교번)"
                                             variant="standard"
+                                            inputProps={{
+                                                maxLength: 20
+                                            }}
+                                            onChange={userIdHandler}
                                             sx={{ display: 'block', mr: 4 }}
                                             />
                                             <TextField
                                             fullWidth
                                             required
                                             id="phoneNumber"
-                                            name="phoneNumber"
                                             label="전화번호"
                                             variant="standard"
+                                            onChange={phoneHandler}
                                             sx={{ display: 'block' }}
                                             />
                                         </Box>
@@ -94,9 +173,12 @@ export default function Join({ loggedIn }: joinProps) {
                                         fullWidth
                                         required
                                         id="email"
-                                        name="email"
                                         label="이메일"
                                         variant="standard"
+                                        inputProps={{
+                                            maxLength: 40
+                                        }}
+                                        onChange={emailHandler}
                                         sx={{ mb: 2 }}
                                         />
                                         <Box sx={{ display: 'flex', mb: 2 }}>
@@ -105,19 +187,27 @@ export default function Join({ loggedIn }: joinProps) {
                                             required
                                             type="password"
                                             id="pw"
-                                            name="password"
                                             label="비밀번호"
                                             variant="standard"
+                                            inputProps={{
+                                                minLength: 8,
+                                                maxLength: 16
+                                            }}
+                                            onChange={passwordHandler}
                                             sx={{ display: 'block', mr: 4 }}
                                             />
                                             <TextField
                                             fullWidth
                                             required
                                             type="password"
-                                            name="pwConfirm"
                                             id="pwConfirm"
                                             label="비밀번호 확인"
                                             variant="standard"
+                                            inputProps={{
+                                                minLength: 8,
+                                                maxLength: 16
+                                            }}
+                                            onChange={pwConfirmHandler}
                                             sx={{ display: 'block' }}
                                             />
                                         </Box>
