@@ -15,14 +15,14 @@ import axios from "axios";
 import sha256 from 'crypto-js/sha256';
 
 interface signInProps {
-    onSignIn: () => void,
+    signInHandler: () => void,
     loggedIn: boolean
 }
 
-export default function Login({ onSignIn, loggedIn }: signInProps) {
-    console.log(sha256('hello'));
+export default function Login({ signInHandler, loggedIn }: signInProps) {
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
     const emailHandler = (e: any) => {
         e.preventDefault();
         setEmail(e.target.value);
@@ -35,14 +35,17 @@ export default function Login({ onSignIn, loggedIn }: signInProps) {
         e.preventDefault();
         const body = {
             email,
-            password: sha256(password)
+            password: sha256(password).toString()
         };
-        console.log(body);
         axios
             .post('http://3.37.234.117:5000/users/login', body)
-            // .post('http://localhost:5000/users/login', body)
-            .then((res) => console.log(res));
+            .then((res) => signInHandler())
+            .catch((error) => {
+                alert('Failed to sign in');
+                window.location.reload();
+            });
     }
+    
     return (
         <Box>
             {
@@ -72,7 +75,6 @@ export default function Login({ onSignIn, loggedIn }: signInProps) {
                                 <Box
                                 component="form"
                                 onSubmit={submitHandler}
-                                // onSubmit={onSignIn}
                                 >
                                   <TextField
                                   fullWidth

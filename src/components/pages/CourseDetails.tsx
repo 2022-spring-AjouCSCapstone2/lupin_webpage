@@ -36,6 +36,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                     <Tab label="수업 상세" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="이전 수업들" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="게시판" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
+                    <Tab label="학생 관리" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                 </Tabs>
             </Box>
             <Box>
@@ -138,6 +139,11 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                                 <Button variant="contained">GO</Button>
                             </Box>
                         </Card>
+                    </Container>
+                </TabPanel>                
+                <TabPanel value={tabNumber} index={3}>
+                    <Container sx={{ display: 'flex', justifyContent: 'center' }}>
+                        <Typography sx={{ display: 'block', my: 10 }}>여기에 디자인 하시면 됩니다.</Typography>
                     </Container>
                 </TabPanel>
             </Box>

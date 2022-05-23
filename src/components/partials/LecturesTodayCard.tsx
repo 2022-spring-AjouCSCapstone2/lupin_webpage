@@ -54,6 +54,7 @@ export default function LectureCard({courseData}: CourseDataProps) {
                   variant="contained"
                   sx={{ width: '22%' }}>
                     참가하기
+                    {/* 생성하기 */}
                 </Button>
               : <Button
                   variant="contained"
