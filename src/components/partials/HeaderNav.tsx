@@ -54,7 +54,8 @@ export default function HeaderNav({ logoutHandler }: NavProps) {
 
   const handleLogout = () => {
    axios
-    .get('http://3.37.234.117:5000/users/logout')
+    // .get('http://3.37.234.117:5000/users/logout', { withCredentials: true })
+    .get('http://localhost:5000/users/logout', { withCredentials: true })
     .then((res) => {
       console.log(res);      
       logoutHandler();

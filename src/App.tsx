@@ -4,7 +4,6 @@ import {
 } from 'react-router-dom';
 import Login from './components/pages/Login';
 import Join from './components/pages/Join';
-// import Logout from './components/Logout';
 import { useState } from 'react';
 import PrivateRoute from './components/PrivateRoute';
 

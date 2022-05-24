@@ -78,12 +78,15 @@ export default function Join({ loggedIn }: joinProps) {
                 phone
             };
             axios
-                .post('http://3.37.234.117:5000/users/join', body)
+                // .post('http://3.37.234.117:5000/users/join', body)
+                .post('http://localhost:5000/users/join', body)
                 .then((res) => {
+                    console.log(res);
                     alert('회원가입이 정상적으로 완료되었습니다.');
                     history.push("/login");
                 })
                 .catch((error) => {
+                    console.log(error);
                     alert('회원가입에 실패했습니다. 가입 정보를 다시 확인해주세요.');
                 });
         }
