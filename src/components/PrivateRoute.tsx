@@ -12,20 +12,19 @@ import CourseDetails from './pages/CourseDetails';
 import Footer from './partials/Footer';
 import ScrollToTop from './modules/ScrollToTop';
 import { Redirect } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { ReducerType } from '../rootReducer';
 
-interface PrivateRouteProps {
-    loggedIn: boolean
-    logoutHandler: () => void
-}
+export default function PrivateRoute() {
+    const loggedIn = useSelector<ReducerType>((state) => state.loggedIn);
 
-export default function PrivateRoute({ loggedIn, logoutHandler }: PrivateRouteProps) {
     return (
         <Route render={
             () => loggedIn
             ? (
                     <Box>                    
                         <ScrollToTop />
-                        <HeaderNav logoutHandler={logoutHandler} />
+                        <HeaderNav />
                         <Box sx={{ mt: 8, pb: 10, backgroundColor: '#f9fafb' }}>
                             <Switch>
                                 <Route path="/" exact component={Home} />

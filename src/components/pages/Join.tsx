@@ -16,13 +16,14 @@ import {
  } from 'react-router-dom';
 import axios from "axios";
 import sha256 from 'crypto-js/sha256';
+import { LOCAL_URL } from '../../variables';
+import { useSelector } from 'react-redux';
+import { ReducerType } from '../../rootReducer';
 
-interface joinProps {
-    loggedIn: boolean
-}
 
-
-export default function Join({ loggedIn }: joinProps) {    
+export default function Join() {    
+    const loggedIn = useSelector<ReducerType>((state) => state.loggedIn);
+    
     const history = useHistory();
 
     const [name, setName] = useState('');
@@ -78,8 +79,7 @@ export default function Join({ loggedIn }: joinProps) {
                 phone
             };
             axios
-                // .post('http://3.37.234.117:5000/users/join', body)
-                .post('http://localhost:5000/users/join', body)
+                .post(LOCAL_URL + '/users/join', body)
                 .then((res) => {
                     console.log(res);
                     alert('회원가입이 정상적으로 완료되었습니다.');

@@ -13,13 +13,14 @@ import {
 } from 'react-router-dom';
 import axios from "axios";
 import sha256 from 'crypto-js/sha256';
+import { LOCAL_URL } from '../../variables';
+import { useSelector, useDispatch } from 'react-redux';
+import { ReducerType } from '../../rootReducer';
+import { setLoggedInTrue } from '../../slices/loggedIn';
 
-interface signInProps {
-    signInHandler: () => void,
-    loggedIn: boolean
-}
-
-export default function Login({ signInHandler, loggedIn }: signInProps) {
+export default function Login() {
+    const loggedIn = useSelector<ReducerType>((state) => state.loggedIn);
+    const dispatch = useDispatch();
     const [email, setEmail] = useState<string>('');
     const [password, setPassword] = useState<string>('');
 
@@ -38,12 +39,11 @@ export default function Login({ signInHandler, loggedIn }: signInProps) {
             password: sha256(password).toString()
         };
         axios
-            // .post('http://3.37.234.117:5000/users/login', body, { withCredentials: true })
-            .post('http://localhost:5000/users/login', body, { withCredentials: true })
+            .post(LOCAL_URL + '/users/login', body, { withCredentials: true })
             // .then((res) => signInHandler())
             .then((res) => {
                 console.log(res);
-                signInHandler();
+                dispatch(setLoggedInTrue());
             })
             .catch((error) => {
                 console.log(error);

@@ -13,6 +13,8 @@ import {
   Link as RouterLink,
  } from 'react-router-dom';
  import axios from 'axios';
+import { setLoggedInFalse } from '../../slices/loggedIn';
+import { useDispatch } from 'react-redux';
 
 const pages = [
   {
@@ -29,13 +31,11 @@ const pages = [
   }
 ];
 
-interface NavProps {
-  logoutHandler: () => void
-}
-
-export default function HeaderNav({ logoutHandler }: NavProps) {
+export default function HeaderNav() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+
+  const dispatch = useDispatch();
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -57,8 +57,8 @@ export default function HeaderNav({ logoutHandler }: NavProps) {
     // .get('http://3.37.234.117:5000/users/logout', { withCredentials: true })
     .get('http://localhost:5000/users/logout', { withCredentials: true })
     .then((res) => {
-      console.log(res);      
-      logoutHandler();
+      console.log(res);
+      dispatch(setLoggedInFalse());
     })
     .catch((error) => console.log('error: ', error));
   }

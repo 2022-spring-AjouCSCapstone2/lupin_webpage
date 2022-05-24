@@ -2,6 +2,9 @@ import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
 import LectureCard from '../partials/LecturesTodayCard';
 import PageTitleBanner from '../partials/PageTitleBanner';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { LOCAL_URL } from '../../variables';
 
 // fake data
 const courseData = [
@@ -30,6 +33,16 @@ const pageDataProps = {
 };
 
 export default function Home() {
+    // const [coursesToday, setCoursesToday] = useState({});
+    // useEffect(() => {
+    //     axios
+    //         .post(LOCAL_URL + '/courses/today')
+    //         .then((res) => {
+    //             console.log(res);
+    //             setCoursesToday({/* courseData */});
+    //         })
+    //         .catch((error) => console.log(error));
+    // })
     return (
         <Box>
             <PageTitleBanner props={pageDataProps} />
