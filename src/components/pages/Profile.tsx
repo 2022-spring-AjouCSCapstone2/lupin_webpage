@@ -34,7 +34,7 @@ export default function Profile() {
                 />
                 <TextField
                   fullWidth
-                  id="status"
+                  id="userType"
                   label="신분"
                   defaultValue="학생"
                   sx={{ display: 'block' }}
@@ -96,6 +96,7 @@ export default function Profile() {
                   fullWidth
                   id="pw"
                   label="Password"
+                  type="password"
                   defaultValue=""
                   sx={{ display: 'block', mr: 3 }}
                 />
@@ -103,6 +104,7 @@ export default function Profile() {
                   fullWidth
                   id="pwConfirm"
                   label="Password Confirm"
+                  type="password"
                   defaultValue=""
                   sx={{ display: 'block' }}
                 />

@@ -1,7 +1,10 @@
 import Container from '@mui/material/Container';
 import Box from '@mui/material/Box';
-import LectureCard from './partials/LecturesTodayCard';
-import PageTitleBanner from './partials/PageTitleBanner';
+import LectureCard from '../partials/LecturesTodayCard';
+import PageTitleBanner from '../partials/PageTitleBanner';
+import { useState, useEffect } from 'react';
+import axios from 'axios';
+import { LOCAL_URL } from '../../variables';
 
 // fake data
 const courseData = [
@@ -25,16 +28,27 @@ const courseData = [
 
 const pageDataProps = {
     title: '오늘의 강의',
-    desc: '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!'
+    desc: '질문도 하고 퀴즈도 풀고~ 아자아자 오늘도 힘내자!',
+    isTabBelow: false
 };
 
 export default function Home() {
+    // const [coursesToday, setCoursesToday] = useState({});
+    // useEffect(() => {
+    //     axios
+    //         .post(LOCAL_URL + '/courses/today')
+    //         .then((res) => {
+    //             console.log(res);
+    //             setCoursesToday({/* courseData */});
+    //         })
+    //         .catch((error) => console.log(error));
+    // })
     return (
         <Box>
             <PageTitleBanner props={pageDataProps} />
             <Container maxWidth="md">
                 {courseData.map((data, index) =><LectureCard key={index} courseData={data}/>)}
-            </Container>        
+            </Container>      
         </Box>
     )
 }
