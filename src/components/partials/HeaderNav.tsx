@@ -12,9 +12,10 @@ import MenuItem from '@mui/material/MenuItem';
 import {   
   Link as RouterLink,
  } from 'react-router-dom';
- import axios from 'axios';
-import { setLoggedInFalse } from '../../slices/loggedIn';
+import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import { setLoggedInFalse } from '../../slices/loggedIn';
+import { setNullUser } from '../../slices/user';
 
 const pages = [
   {
@@ -59,6 +60,7 @@ export default function HeaderNav() {
     .then((res) => {
       console.log(res);
       dispatch(setLoggedInFalse());
+      dispatch(setNullUser());
     })
     .catch((error) => console.log('error: ', error));
   }

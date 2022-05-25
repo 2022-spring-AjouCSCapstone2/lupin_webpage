@@ -5,6 +5,8 @@ import PageTitleBanner from '../partials/PageTitleBanner';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { LOCAL_URL } from '../../variables';
+import { ReducerType } from '../../rootReducer';
+import { useSelector } from 'react-redux';
 
 // fake data
 const courseData = [
@@ -43,6 +45,17 @@ export default function Home() {
     //         })
     //         .catch((error) => console.log(error));
     // })
+    const user = useSelector<ReducerType>((state) => state.user);
+    const [todaysLecture, setTodaysLecture] = useState();
+    useEffect(() => {
+        axios
+            .get(LOCAL_URL + '/courses/today', {withCredentials: true})
+            .then((res) => {
+                console.log(res);
+            })
+            .catch((error) => console.log(error));
+    })
+    
     return (
         <Box>
             <PageTitleBanner props={pageDataProps} />

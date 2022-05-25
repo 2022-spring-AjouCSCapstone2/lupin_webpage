@@ -17,6 +17,7 @@ import { LOCAL_URL } from '../../variables';
 import { useSelector, useDispatch } from 'react-redux';
 import { ReducerType } from '../../rootReducer';
 import { setLoggedInTrue } from '../../slices/loggedIn';
+import { User, setUser } from '../../slices/user';
 
 export default function Login() {
     const loggedIn = useSelector<ReducerType>((state) => state.loggedIn);
@@ -44,6 +45,7 @@ export default function Login() {
             .then((res) => {
                 console.log(res);
                 dispatch(setLoggedInTrue());
+                dispatch(setUser(res.data as User));
             })
             .catch((error) => {
                 console.log(error);
