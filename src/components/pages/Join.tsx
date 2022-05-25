@@ -19,6 +19,7 @@ import sha256 from 'crypto-js/sha256';
 import { LOCAL_URL } from '../../variables';
 import { useSelector } from 'react-redux';
 import { ReducerType } from '../../rootReducer';
+import { emailRegex, pwRegex } from '../../variables';
 
 
 export default function Join() {    
@@ -30,7 +31,7 @@ export default function Join() {
     const [email, setEmail] = useState('');
     const [userId, setUserId] = useState(0);
     const [userType, setUserType] = useState('STUDENT');
-    const [phone, setPhone] = useState('');
+    const [phone, setPhone] = useState<number|undefined>();
     const [password, setPassword] = useState('');
     const [pwConfirm, setPwConfirm] = useState('');
     
@@ -69,6 +70,8 @@ export default function Join() {
     const submitHandler = (e: any) => {
         e.preventDefault();
         if(password !== pwConfirm) alert("비밀번호가 일치하지 않습니다.");
+        else if(!email.match(emailRegex)) alert("이메일 형식을 다시 확인해주세요.");
+        else if(!password.match(pwRegex)) alert("비밀번호는 알파벳, 숫자, 특수문자를 모두 포함한 8~15 글자로 이루어져야 합니다.")
         else {
             const body = {
                 userId: Number(userId),
@@ -173,7 +176,6 @@ export default function Join() {
                                             />
                                             <TextField
                                             fullWidth
-                                            required
                                             id="phoneNumber"
                                             label="전화번호"
                                             variant="standard"
@@ -203,7 +205,7 @@ export default function Join() {
                                             variant="standard"
                                             inputProps={{
                                                 minLength: 8,
-                                                maxLength: 16
+                                                maxLength: 15
                                             }}
                                             onChange={passwordHandler}
                                             sx={{ display: 'block', mr: 4 }}
@@ -217,7 +219,7 @@ export default function Join() {
                                             variant="standard"
                                             inputProps={{
                                                 minLength: 8,
-                                                maxLength: 16
+                                                maxLength: 15
                                             }}
                                             onChange={pwConfirmHandler}
                                             sx={{ display: 'block' }}
