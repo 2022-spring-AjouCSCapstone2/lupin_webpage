@@ -152,7 +152,7 @@ export default function HeaderNav() {
               }}
             >
               {pages.map((page) => (
-                <MenuItem key={page.name} onClick={handleCloseNavMenu}>
+                <MenuItem key={page.name} onClick={handleCloseNavMenu} sx={{ p: 0 }}>
                   <Typography
                     key={page.name}
                     onClick={handleCloseNavMenu}
@@ -163,7 +163,11 @@ export default function HeaderNav() {
                       textTransform: 'none',
                       textDecoration: 'none',
                       display: 'block',
-                      backgroundColor: 'transparent'
+                      backgroundColor: 'transparent',
+                      width: '100%',
+                      py: 1,
+                      pl: 2,
+                      pr: 3
                     }}
                   >
                     {page.name}
@@ -219,24 +223,28 @@ export default function HeaderNav() {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              <MenuItem key={'profile'} onClick={handleCloseUserMenu}>
+              <MenuItem key={'profile'} onClick={handleCloseUserMenu} sx={{ p: 0 }}>
                 <Typography
                   key={'profile'}
                   onClick={handleCloseNavMenu}
                   component={RouterLink}
                   to={'/profile'}
-                  sx={{ 
+                  sx={{
                     color: 'inherit',
                     textTransform: 'none',
                     textDecoration: 'none',
                     display: 'block',
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
+                    width: '100%',
+                    py: 1,
+                    pl: 2,
+                    pr: 3
                   }}
                 >
                   프로필
                 </Typography>   
               </MenuItem>
-              <MenuItem key={'my-posts'} onClick={handleCloseUserMenu}>
+              <MenuItem key={'my-posts'} onClick={handleCloseUserMenu} sx={{ p: 0 }}>
                 <Typography
                   key={'my-posts'}
                   onClick={handleCloseNavMenu}
@@ -247,13 +255,17 @@ export default function HeaderNav() {
                     textTransform: 'none',
                     textDecoration: 'none',
                     display: 'block',
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
+                    width: '100%',
+                    py: 1,
+                    pl: 2,
+                    pr: 3
                   }}
                 >
                   내 게시물
                 </Typography>   
               </MenuItem>
-              <MenuItem key={'logout'} onClick={handleCloseUserMenu}>
+              <MenuItem key={'logout'} onClick={handleCloseUserMenu} sx={{ p: 0 }}>
                 <Typography
                   key={'profile'}
                   onClick={handleLogout}
@@ -262,7 +274,11 @@ export default function HeaderNav() {
                     textTransform: 'none',
                     textDecoration: 'none',
                     display: 'block',
-                    backgroundColor: 'transparent'
+                    backgroundColor: 'transparent',
+                    width: '100%',
+                    py: 1,
+                    pl: 2,
+                    pr: 3
                   }}
                 >
                   로그아웃
