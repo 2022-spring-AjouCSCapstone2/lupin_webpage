@@ -8,35 +8,74 @@ import Avatar from '@mui/material/Avatar';
 import TextField from '@mui/material/TextField';
 import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
+import { ReducerType } from '../../rootReducer';
+import { useSelector } from 'react-redux';
+import { User } from '../../slices/user';
+import { useState } from 'react';
 
 export default function Profile() {
+    const user = useSelector<ReducerType, User>((state) => state.user);
+    const [phone, setPhone] = useState('');
+    const [curPw, setCurPw] = useState('');
+    const [newPw, setNewPw] = useState('');
+    const [pwConfirm, setPwConfirm] = useState('');
+
+    const phoneHandler = (e: any) => {
+      e.preventDefault();
+      setPhone(e.target.value);
+    }
+    
+    const curPwHandler = (e: any) => {
+      e.preventDefault();
+      setCurPw(e.target.value);
+    }
+    
+    const newPwHandler = (e: any) => {
+      e.preventDefault();
+      setNewPw(e.target.value);
+    }
+    
+    const pwConfirmHandler = (e: any) => {
+      e.preventDefault();
+      setPwConfirm(e.target.value);
+    }
+
     return (
       <Container
-        sx={{ pt: 10 }}>
+        sx={{ pt: { xs: 7, md: 10 } }}>
+
+        {/* Account Information */}
         <Box
-          sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: { xs: 'start', md: 'space-between' },
+            alignItems: { xs: 'center', md: 'start' }
+            }}>
           <Typography
-            sx={{ fontSize: 20 }}>
+            sx={{ fontSize: { xs: 26, md: 20 }, mb: { xs: 4, md: 0 } }}>
               Account Information
           </Typography>
           <Card
-            sx={{ p: 0, width: '70%' }}>
+            sx={{ p: 0, width: { xs: '100%', md: '70%' } }}>
             <CardContent
               sx={{ m: 1 }}>
               <Box
                 sx={{ display: 'flex', mb: 4 }}>
                 <TextField
                   fullWidth
-                  id="name"
+                  id="nameLarge"
                   label="이름"
-                  defaultValue="고영준"
+                  disabled
+                  defaultValue={user.name}
                   sx={{ display: 'block', mr: 3 }}
                 />
                 <TextField
                   fullWidth
-                  id="userType"
+                  id="userTypeLarge"
                   label="신분"
-                  defaultValue="학생"
+                  disabled
+                  defaultValue={user.userType === 'STUDENT' ? '학생' : '교수'}
                   sx={{ display: 'block' }}
                 />
               </Box>
@@ -44,16 +83,18 @@ export default function Profile() {
                 sx={{ display: 'flex', mb: 4 }}>
                 <TextField
                   fullWidth
-                  id="schoolId"
+                  id="userIdLarge"
                   label="학번"
-                  defaultValue="201620625"
+                  disabled
+                  defaultValue={user.userId}
                   sx={{ display: 'block', mr: 3 }}
                 />
                 <TextField
                   fullWidth
-                  id="phoneNumber"
+                  id="phoneLarge"
                   label="전화번호"
-                  defaultValue="010-1234-5678"
+                  onChange={phoneHandler}
+                  defaultValue={user.phone}
                   sx={{ display: 'block' }}
                 />
               </Box>
@@ -61,9 +102,10 @@ export default function Profile() {
                 sx={{ display: 'flex' }}>
                 <TextField
                   fullWidth
-                  id="email"
+                  id="emailLarge"
                   label="E-Mail"
-                  defaultValue="rickeykoh11@gmail.com"
+                  disabled
+                  defaultValue={user.email}
                 />
               </Box>
             </CardContent>
@@ -78,33 +120,50 @@ export default function Profile() {
           </Card>
         </Box>
 
-        <Divider light sx={{ my: 3 }} />
+        <Divider light sx={{ my: { xs: 5, md: 3 } }} />
 
+        {/* Password */}
         <Box
-          sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: { xs: 'start', md: 'space-between' },
+            alignItems: { xs: 'center', md: 'start' }
+            }}>
           <Typography
-            sx={{ fontSize: 20 }}>
-              Password
+            sx={{ fontSize: { xs: 26, md: 20 }, mb: { xs: 4, md: 0 } }}>
+            Password
           </Typography>
           <Card
-            sx={{ p: 0, width: '70%' }}>
+            sx={{ p: 0, width: { xs: '100%', md: '70%' } }}>
             <CardContent
-              sx={{ m: 1 }}>
+              sx={{ m: 1 }}>           
+              <TextField
+                fullWidth
+                id="curPwLarge"
+                label="Current Password"
+                type="password"
+                onChange={curPwHandler}
+                defaultValue=""
+                sx={{ display: 'block', mb: 4 }}
+              />
               <Box
                 sx={{ display: 'flex' }}>
                 <TextField
                   fullWidth
-                  id="pw"
-                  label="Password"
+                  id="newPwLarge"
+                  label="New Password"
                   type="password"
+                  onChange={newPwHandler}
                   defaultValue=""
                   sx={{ display: 'block', mr: 3 }}
                 />
                 <TextField
                   fullWidth
-                  id="pwConfirm"
+                  id="pwConfirmLarge"
                   label="Password Confirm"
                   type="password"
+                  onChange={pwConfirmHandler}
                   defaultValue=""
                   sx={{ display: 'block' }}
                 />
@@ -121,16 +180,22 @@ export default function Profile() {
           </Card>
         </Box>
 
-        <Divider light sx={{ my: 3 }} />
+        <Divider light sx={{ my: { xs: 5, md: 3 } }} />
 
+        {/*  Avatar */}
         <Box
-          sx={{ display: 'flex', justifyContent: 'space-between' }}>
+          sx={{
+            display: 'flex',
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: { xs: 'start', md: 'space-between' },
+            alignItems: { xs: 'center', md: 'start' }
+            }}>
           <Typography
-            sx={{ fontSize: 20 }}>
-              Avatar
+            sx={{ fontSize: { xs: 26, md: 20 }, mb: { xs: 4, md: 0 } }}>
+            Avatar
           </Typography>
           <Card
-            sx={{ p: 0, width: '70%' }}>
+            sx={{ p: 0, width: { xs: '100%', md: '70%' } }}>
             <CardContent
               sx={{ m: 1 }}>
               <Box

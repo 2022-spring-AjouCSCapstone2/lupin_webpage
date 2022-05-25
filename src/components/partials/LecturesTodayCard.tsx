@@ -10,6 +10,7 @@ import { Courses } from '../../slices/courses';
 import { timeFormat } from '../../variables';
 import { useSelector } from 'react-redux';
 import { ReducerType } from '../../rootReducer';
+import { User } from '../../slices/user';
 
 interface LectureProps {
   courseData: Courses
@@ -41,6 +42,8 @@ export default function LectureCard({courseData}: LectureProps) {
   } = timetable;
 
   const classOpen = true;
+  
+  const user = useSelector<ReducerType, User>((state) => state.user);
 
   return (
       <Card
@@ -75,8 +78,11 @@ export default function LectureCard({courseData}: LectureProps) {
               ? <Button
                   variant="contained"
                   sx={{ width: '22%' }}>
-                    참가하기
-                    {/* 생성하기 */}
+                    {
+                      user.userType === 'STUDENT'
+                      ? '참가하기'
+                      : '생성하기'
+                    }
                 </Button>
               : <Button
                   variant="contained"
