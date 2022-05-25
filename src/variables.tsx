@@ -38,3 +38,33 @@ export const timeFormat = (time: string) => {
     tmp.splice(2, 0, ':');
     return tmp.join('');
 }
+export const getKoreanDay = (day: string) => {
+    let koreanDay;
+    switch (day) {
+        case 'sun':
+            koreanDay = '일';
+            break;
+        case 'mon':
+            koreanDay = '월';
+            break;
+        case 'tue':
+            koreanDay = '화';
+            break;
+        case 'wed':
+            koreanDay = '수';
+            break;
+        case 'thu':
+            koreanDay = '목';
+            break;
+        case 'fri':
+            koreanDay = '금';
+            break;
+        case 'sat':
+            koreanDay = '토';
+            break;
+        default:
+            koreanDay = '무';
+            break;
+    }
+    return koreanDay;
+}

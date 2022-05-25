@@ -7,22 +7,23 @@ import Chip from '@mui/material/Chip';
 import {   
   Link as RouterLink,
  } from 'react-router-dom';
+import { Courses } from '../../slices/courses';
+import { getKoreanDay } from '../../variables';
 
 interface CourseDataProps {
-    courseData: {
-        id: number,
-        title: string,
-        professor: string,
-        classroom: string,
-        time: {
-          dow: string,
-          period: string,
-        }[],
-    };    
+    courseData: Courses
 };
 
 export default function LectureCard({courseData}: CourseDataProps) {
-  const {id, title, time} = courseData;
+  const {
+    id,
+    courseId,
+    name,
+    timetables,
+  } = courseData;
+
+  const days = timetables.map((table) => getKoreanDay(table.day));
+
   return (
     <Button
       component={RouterLink}
@@ -48,11 +49,11 @@ export default function LectureCard({courseData}: CourseDataProps) {
                 }}>
                 <Box>
                   <Typography variant="h5" component="div" sx={{ fontSize: 20, fontWeight: 700 }}>
-                      {title}
+                      {`${name}(${courseId})`}
                   </Typography>
                 </Box>
                 <Chip
-                  label={time.map(t => t.dow).join(', ')}
+                  label={days.join(', ')}
                   sx={{
                     fontWeight: 900,
                     cursor: 'pointer',
