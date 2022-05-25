@@ -1,4 +1,3 @@
-import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 interface TabPanelProps {
@@ -20,7 +19,7 @@ return (
     >
     {value === index && (
         <Box sx={{ p: 5 }}>
-        <Typography>{children}</Typography>
+            <Box>{children}</Box>
         </Box>
     )}
     </div>

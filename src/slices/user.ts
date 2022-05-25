@@ -1,37 +1,23 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
 export interface User {
-    id: number | null,
-    name: string | null,
-    userType: string | null,
-    email: string | null,
-    userId: number | null,
-    phone: number | null
+    id: number,
+    name: string,
+    userType: string,
+    email: string,
+    userId: number,
+    phone: number
 }
 
 const user = createSlice({
     name: 'user',
-    initialState: {
-        id: null,
-        name: null,
-        userType: null,
-        email: null,
-        userId: null,
-        phone: null,
-    } as User,
+    initialState: {} as User,
     reducers: {
-        setUser(state, action: PayloadAction<User>) {
-            return {...state, ...action.payload};
+        setUser(_, action: PayloadAction<User>) {
+            return {...action.payload};
         },
         setNullUser() {
-            return {
-                id: null,
-                name: null,
-                userType: null,
-                email: null,
-                userId: null,
-                phone: null,
-            };
+            return {} as User;
         }
     } 
 });

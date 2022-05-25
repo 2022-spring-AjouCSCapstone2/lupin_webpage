@@ -23,7 +23,7 @@ const pageDataProps = {
 };
 
 export default function CourseDetails({ match }: RouteComponentProps<MatchParams>) {
-    const { params: { id }, path } = match;
+    // const { params: { id }, path } = match;
     const [tabNumber, setTabNumber] = useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setTabNumber(newValue);
@@ -44,7 +44,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                     <Container maxWidth="md">
                         <Card sx={{ p: 3 }}>
                             <CardContent>
-                                <Typography variant="h5" sx={{ fontSize: 28, fontWeight: 700, mb: 3 }}>사이버보안캡스톤디자인(F108-1)</Typography>
+                                <Typography sx={{ fontSize: 28, fontWeight: 700, mb: 3 }}>사이버보안캡스톤디자인(F108-1)</Typography>
                                 <Typography sx={{ fontSize: 20, mb: 1 }}>담당 교수: 손태식</Typography>
                                 <Typography sx={{ fontSize: 20, mb: 1 }}>이메일: tasikshon@ajou.ac.kr</Typography>
                                 <Typography sx={{ fontSize: 20, mb: 1 }}>수업 시간: 월(15:00 ~ 19:30), 수(15:00 ~ 19:30)</Typography>

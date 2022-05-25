@@ -6,26 +6,48 @@ import CardActions from '@mui/material/CardActions';
 import {   
   Link as RouterLink,
  } from 'react-router-dom';
+import { Courses } from '../../slices/courses';
+import { timeFormat } from '../../variables';
+import { useSelector } from 'react-redux';
+import { ReducerType } from '../../rootReducer';
 
-interface CourseDataProps {
-    courseData: {
-        id: number,
-        title: string,
-        professor: string,
-        classroom: string,
-        time: string,
-        classOpen: boolean,
+interface LectureProps {
+  courseData: Courses
+}
+
+export default function LectureCard({courseData}: LectureProps) {  
+  const {
+    id,
+    courseId,
+    name,
+    timetables,
+    professor: {
+      name: professor
     }
-};
+  } = courseData;
 
-export default function LectureCard({courseData}: CourseDataProps) {
-  const {id, title, professor, classroom, time, classOpen} = courseData;
+  const today = useSelector<ReducerType>((state) => state.today);
+
+  const timetable = timetables.find((timetable) => timetable.day === today);
+
+  if(timetable === undefined) {
+    throw new TypeError('요일에 맞는 시간을 찾지 못했습니다.');
+  }
+
+  const {
+    startTime,
+    endTime,
+    place
+  } = timetable;
+
+  const classOpen = true;
+
   return (
       <Card
       sx={{ minWidth: 275, p: 1, mb: 1 }}>
           <CardContent>
               <Typography variant="h5" component="div">
-                  {title}
+                  {`${name}(${courseId})`}
               </Typography>
               <Typography 
                 sx={{ 
@@ -33,10 +55,10 @@ export default function LectureCard({courseData}: CourseDataProps) {
                   fontSize: 14
                 }}
                 color="text.secondary">
-              {professor} | {classroom}
+              {professor} | {place}
               </Typography>
               <Typography variant="body2">
-                {time}
+                {`${timeFormat(startTime)} ~ ${timeFormat(endTime)}`}
               </Typography>
           </CardContent>
           <CardActions

@@ -17,7 +17,9 @@ import { LOCAL_URL } from '../../variables';
 import { useSelector, useDispatch } from 'react-redux';
 import { ReducerType } from '../../rootReducer';
 import { setLoggedInTrue } from '../../slices/loggedIn';
-import { User, setUser } from '../../slices/user';
+import { setUser } from '../../slices/user';
+import { setTodaysLecture } from '../../slices/todaysLecture';
+import { setCourses } from '../../slices/courses';
 
 export default function Login() {
     const loggedIn = useSelector<ReducerType>((state) => state.loggedIn);
@@ -41,11 +43,28 @@ export default function Login() {
         };
         axios
             .post(LOCAL_URL + '/users/login', body, { withCredentials: true })
-            // .then((res) => signInHandler())
-            .then((res) => {
-                console.log(res);
-                dispatch(setLoggedInTrue());
-                dispatch(setUser(res.data as User));
+            .then((resLogin) => {
+                console.log('resLogin', resLogin);
+                axios
+                .all([
+                    axios.get(LOCAL_URL + '/courses/today', {withCredentials: true}),
+                    axios.get(LOCAL_URL + '/courses', {withCredentials: true}),
+                ])
+                .then(
+                    axios.spread((resToday, resAll) => {
+                        console.log('resToday', resToday);
+                        console.log('resAll', resAll);
+                        dispatch(setCourses(resAll.data));
+                        dispatch(setTodaysLecture(resToday.data));
+                        dispatch(setUser(resLogin.data));
+                        dispatch(setLoggedInTrue());
+                    })
+                )
+                .catch((error) => {
+                    console.log(error);
+                    alert('사용자 정보를 불러오는데 실패했습니다.');
+                    window.location.reload();
+                });
             })
             .catch((error) => {
                 console.log(error);
