@@ -5,12 +5,15 @@ import PageTitleBanner from '../partials/PageTitleBanner';
 import TabPanel from '../partials/TabPanel';
 import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
-import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import Button from '@mui/material/Button';
 import { RouteComponentProps } from "react-router";
 import { useState } from 'react';
+import CourseDescription from '../partials/CourseDescription';
+import { ReducerType } from '../../rootReducer';
+import { useSelector } from 'react-redux';
+import { User } from '../../slices/user';
 
 interface MatchParams {
     id: string;
@@ -23,11 +26,16 @@ const pageDataProps = {
 };
 
 export default function CourseDetails({ match }: RouteComponentProps<MatchParams>) {
-    // const { params: { id }, path } = match;
+    const { params: { id } } = match;
     const [tabNumber, setTabNumber] = useState(0);
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setTabNumber(newValue);
     };
+    
+    const user = useSelector<ReducerType, User>((state) => state.user);
+    const { userType } = user;
+
     return(
         <Box>
             <PageTitleBanner props={pageDataProps} />
@@ -36,24 +44,22 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                     <Tab label="수업 상세" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="이전 수업들" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="게시판" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
-                    <Tab label="학생 관리" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
+                    {
+                        userType === 'PROFESSOR'
+                        ?
+                        <Tab label="학생 관리" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
+                        :
+                        null
+                    }
                 </Tabs>
             </Box>
             <Box>
+                {/* 수업 상세 */}
                 <TabPanel value={tabNumber} index={0}>
-                    <Container maxWidth="md">
-                        <Card sx={{ p: 3 }}>
-                            <CardContent>
-                                <Typography sx={{ fontSize: 28, fontWeight: 700, mb: 3 }}>사이버보안캡스톤디자인(F108-1)</Typography>
-                                <Typography sx={{ fontSize: 20, mb: 1 }}>담당 교수: 손태식</Typography>
-                                <Typography sx={{ fontSize: 20, mb: 1 }}>이메일: tasikshon@ajou.ac.kr</Typography>
-                                <Typography sx={{ fontSize: 20, mb: 1 }}>수업 시간: 월(15:00 ~ 19:30), 수(15:00 ~ 19:30)</Typography>
-                                <Typography sx={{ fontSize: 20, mb: 1 }}>강의실: 종합설계동101</Typography>
-                                <Typography sx={{ fontSize: 20 }}>내 포인트: 3</Typography>
-                            </CardContent>
-                        </Card>
-                    </Container>
+                    <CourseDescription id={id} />
                 </TabPanel>
+
+                {/* 이전 수업들 */}
                 <TabPanel value={tabNumber} index={1}>
                     <Container maxWidth="md">
                         <Card>
@@ -89,6 +95,8 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                         </Card>
                     </Container>
                 </TabPanel>
+
+                {/* 게시판 */}
                 <TabPanel value={tabNumber} index={2}>
                     <Container maxWidth="md">
                         <Card>
@@ -126,7 +134,9 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                             </Box>
                         </Card>
                     </Container>
-                </TabPanel>                
+                </TabPanel>
+
+                {/* 학생 관리 */}
                 <TabPanel value={tabNumber} index={3}>
                     <Container sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Typography sx={{ display: 'block', my: 10 }}>여기에 디자인 하시면 됩니다.</Typography>
