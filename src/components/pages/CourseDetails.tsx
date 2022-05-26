@@ -5,14 +5,14 @@ import TabPanel from '../partials/TabPanel';
 import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 import Typography from '@mui/material/Typography';
+import CourseDescription from '../partials/CourseDescription';
+import PreviousLectures from '../partials/PreviousLectures';
+import PostBoard from '../partials/PostBoard';
 import { RouteComponentProps } from "react-router";
 import { useState } from 'react';
 import { ReducerType } from '../../rootReducer';
 import { useSelector } from 'react-redux';
 import { User } from '../../slices/user';
-import CourseDescription from '../partials/CourseDescription';
-import PreviousLectures from '../partials/PreviousLectures';
-import PostBoard from '../partials/PostBoard';
 
 interface MatchParams {
     id: string;
@@ -65,7 +65,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
 
                 {/* 게시판 */}
                 <TabPanel value={tabNumber} index={2}>
-                    <PostBoard />
+                    <PostBoard id={id} />
                 </TabPanel>
 
                 {/* 학생 관리 */}

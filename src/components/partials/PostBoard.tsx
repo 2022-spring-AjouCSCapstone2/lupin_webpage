@@ -3,11 +3,19 @@ import Container from '@mui/material/Container';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
+import Button from '@mui/material/Button';
+import {   
+  Link as RouterLink,
+ } from 'react-router-dom';
 
-export default function PostBoard() {
+interface PostBoardProps {
+    id: string
+}
+
+export default function PostBoard({ id }: PostBoardProps) {
     return (
-        <Container maxWidth="md">
-            <Card>
+        <Container maxWidth="md" sx={{ display: 'flex', flexDirection: 'column' }}>
+            <Card sx={{ mb: 4 }}>
                 <Box sx={{ py: 3, px: 5, display: 'flex', flexDirection: 'column' }}>
                     <Typography sx={{ fontSize: 18, mb: 2 }}>웹과제 10번 팁 공유합니다.</Typography>
                     <Typography sx={{ fontSize: 14, mb: 2 }} color="text.secondary">
@@ -41,6 +49,18 @@ export default function PostBoard() {
                     </Box>
                 </Box>
             </Card>
+            <Button
+            variant="contained"
+            component={RouterLink}
+            to={`/courses/${id}/post`}
+            sx={{
+                fontSize: 18,
+                fontWeight: 700,
+                width: '100%'
+                }}
+            >
+                    글쓰기
+            </Button>
         </Container>
     );
 }
