@@ -8,6 +8,10 @@ import { alpha, styled } from '@mui/material/styles';
 import { useState } from "react";
 import axios from "axios";
 import { LOCAL_URL } from "../../variables";
+import { useHistory } from 'react-router-dom';
+import { ReducerType } from '../../rootReducer';
+import { useSelector } from 'react-redux';
+import { Courses } from "../../slices/courses";
 
 interface MatchParams {
     id: string;
@@ -40,8 +44,14 @@ const PostInput = styled(InputBase)(({ theme }) => ({
 export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
     const { params: { id } } = match;
 
+    const history = useHistory();
+
     const [title, setTitle] = useState('');
     const [content, setContent] = useState('');
+    
+    const courses = useSelector<ReducerType, Courses[]>((state) => state.courses);
+    const course = courses.find((course) => course.id === Number(id))
+    const courseId = course?.courseId;
 
     const titleHandler = (e: any) => {
         e.preventDefault();
@@ -58,12 +68,13 @@ export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
         const body = {
             title: title.trim(),
             content: content.trim(),
-            courseId: id
+            courseId,
         };
         axios
-        .post(LOCAL_URL + '/posts', body)
+        .post(LOCAL_URL + '/posts', body, {withCredentials: true})
         .then((res) => {
             console.log(res);
+            history.push(`/courses/${id}`);
         })
         .catch((error) => alert('게시물 등록에 실패했습니다.'))
     }

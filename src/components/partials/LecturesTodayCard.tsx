@@ -41,7 +41,7 @@ export default function LectureCard({courseData}: LectureProps) {
     place
   } = timetable;
 
-  const classOpen = true;
+  const classOpen = false;
   
   const user = useSelector<ReducerType, User>((state) => state.user);
 

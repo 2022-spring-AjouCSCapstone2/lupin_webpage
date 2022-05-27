@@ -9,6 +9,7 @@ import { setToday } from '../../slices/today';
 import { setTodaysLecture } from '../../slices/todaysLecture';
 import { Courses } from '../../slices/courses';
 import axios from 'axios';
+import { useEffect, useState } from 'react';
 
 const pageDataProps = {
     title: '오늘의 강의',
@@ -34,6 +35,24 @@ export default function Home() {
     }
 
     const todaysLecture = useSelector<ReducerType, Courses[]>((state) => state.todaysLecture);
+
+    const [currentTime, setCurrentTime] = useState();
+
+    // useEffect(() => {
+    //     const clock = setInterval(() => {
+    //         const date = new Date();
+    //         const hours = date.getHours();
+    //         const minutes = date.getMinutes();
+    //         console.log(`${hours}:${minutes}`);
+    //     }, 1000);
+    //     return clearInterval(clock);
+    // }, []);
+
+
+
+    // const getClock = () => {
+    //     const hours = new Date().getHours();
+    // }
     
     return (
         <Box>
