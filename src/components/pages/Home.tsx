@@ -36,8 +36,8 @@ export default function Home() {
 
     const todaysLecture = useSelector<ReducerType, Courses[]>((state) => state.todaysLecture);
 
-    const [currentHours, setCurrentHours] = useState(0);
-    const [currentMinutes, setCurrentMinutes] = useState(0);
+    const [currentHours, setCurrentHours] = useState<number | null>(null);
+    const [currentMinutes, setCurrentMinutes] = useState<number | null>(null);
 
     useEffect(() => {
         const clock = setInterval(() => {

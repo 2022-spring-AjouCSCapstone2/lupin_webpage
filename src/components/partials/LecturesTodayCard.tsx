@@ -14,8 +14,8 @@ import { User } from '../../slices/user';
 
 interface LectureProps {
   courseData: Courses
-  hours: number,
-  minutes: number
+  hours: number | null,
+  minutes: number | null
 }
 
 export default function LectureCard({ courseData, hours, minutes }: LectureProps) {  
@@ -53,6 +53,7 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
   const endMinutes = Number(endTime.slice(2, 4));
 
   const timeLeft = () => {
+    if(hours === null || minutes === null) return '로딩중...';
     const startFullTime = startHours * 60 + startMinutes;
     const endFullTime = endHours * 60 + endMinutes;
     const currentFullTime = hours * 60 + minutes;
