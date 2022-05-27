@@ -62,7 +62,10 @@ export default function HeaderNav() {
       dispatch(setLoggedInFalse());
       dispatch(setNullUser());
     })
-    .catch((error) => console.log('error: ', error));
+    .catch((error) => {
+      console.log('error: ', error);
+      alert('로그아웃에 실패했습니다. 브라우저를 껐다 다시 켜주세요.');
+    });
   }
 
   return (

@@ -36,29 +36,28 @@ export default function Home() {
 
     const todaysLecture = useSelector<ReducerType, Courses[]>((state) => state.todaysLecture);
 
-    const [currentTime, setCurrentTime] = useState();
+    const [currentHours, setCurrentHours] = useState(0);
+    const [currentMinutes, setCurrentMinutes] = useState(0);
 
-    // useEffect(() => {
-    //     const clock = setInterval(() => {
-    //         const date = new Date();
-    //         const hours = date.getHours();
-    //         const minutes = date.getMinutes();
-    //         console.log(`${hours}:${minutes}`);
-    //     }, 1000);
-    //     return clearInterval(clock);
-    // }, []);
-
-
-
-    // const getClock = () => {
-    //     const hours = new Date().getHours();
-    // }
+    useEffect(() => {
+        const clock = setInterval(() => {
+            const date = new Date();
+            const hours = date.getHours();
+            const minutes = date.getMinutes();
+            if(currentHours !== hours) setCurrentHours(hours);
+            if(currentMinutes !== minutes) setCurrentMinutes(minutes);
+        }, 1000);
+        return () => clearInterval(clock);
+    }, []);
     
     return (
         <Box>
             <PageTitleBanner props={pageDataProps} />
             <Container maxWidth="md">
-                {todaysLecture.map((data, index) =><LectureCard key={index} courseData={data}/>)}
+                {
+                    todaysLecture.map((data, index) =>
+                        <LectureCard key={index} courseData={data} hours={currentHours} minutes={currentMinutes} />)
+                }
             </Container>      
         </Box>
     )
