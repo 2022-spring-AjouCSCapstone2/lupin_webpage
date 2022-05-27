@@ -17,10 +17,16 @@ interface PostBoardProps {
     id: string
 }
 
+interface Comment {
+    id: number,
+    content: string
+}
+
 export interface PostDataProps {
     id: string,
     title: string,
-    content: string
+    content: string,
+    comments: Comment[]
 }
 
 export default function PostBoard({ id }: PostBoardProps) {
@@ -46,7 +52,7 @@ export default function PostBoard({ id }: PostBoardProps) {
             <Card sx={{ mb: 4 }}>
                 {
                     posts
-                    ?.map((post) => <PostCard key={post.id} id={post.id} title={post.title} content={post.content} />)
+                    ?.map((post) => <PostCard key={post.id} id={post.id} title={post.title} content={post.content} comments={post.comments} />)
                     .reduce((acc: (JSX.Element[] | null), cur, index) => 
                         acc === null
                         ? [cur]
