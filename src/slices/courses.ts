@@ -14,7 +14,8 @@ export interface Courses {
     name: string,
     timetables: Timetable[],
     professor: {
-        name: string
+        name: string,
+        email: string
     }
 }
 

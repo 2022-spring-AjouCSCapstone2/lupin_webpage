@@ -14,9 +14,11 @@ import { User } from '../../slices/user';
 
 interface LectureProps {
   courseData: Courses
+  hours: number | null,
+  minutes: number | null
 }
 
-export default function LectureCard({courseData}: LectureProps) {  
+export default function LectureCard({ courseData, hours, minutes }: LectureProps) {  
   const {
     id,
     courseId,
@@ -41,9 +43,27 @@ export default function LectureCard({courseData}: LectureProps) {
     place
   } = timetable;
 
-  const classOpen = true;
+  const classOpen = false;
   
   const user = useSelector<ReducerType, User>((state) => state.user);
+
+  const startHours = Number(startTime.slice(0, 2));
+  const startMinutes = Number(startTime.slice(2, 4));
+  const endHours = Number(endTime.slice(0, 2));
+  const endMinutes = Number(endTime.slice(2, 4));
+
+  const timeLeft = () => {
+    if(hours === null || minutes === null) return '로딩중...';
+    const startFullTime = startHours * 60 + startMinutes;
+    const endFullTime = endHours * 60 + endMinutes;
+    const currentFullTime = hours * 60 + minutes;
+    const minutesGap = startFullTime - currentFullTime;
+
+    if(endFullTime <= currentFullTime) return '오늘 수업 끝!';
+    else if(minutesGap <= 10) return '곧 시작';
+    else if(minutesGap < 60) return `${minutesGap}분 뒤 시작`;
+    else return `${Math.floor(minutesGap / 60)}시간 ${minutesGap % 60} 뒤 시작`;
+  }
 
   return (
       <Card
@@ -88,7 +108,7 @@ export default function LectureCard({courseData}: LectureProps) {
                   variant="contained"
                   disabled
                   sx={{ width: '22%' }}>
-                    50분 뒤 시작
+                    {timeLeft()}
                 </Button>
             }
           </CardActions>

@@ -82,7 +82,7 @@ export default function Join() {
                 phone
             };
             axios
-                .post(LOCAL_URL + '/users/join', body)
+                .post(LOCAL_URL + '/users/join', body, {withCredentials: true})
                 .then((res) => {
                     console.log(res);
                     alert('회원가입이 정상적으로 완료되었습니다.');
