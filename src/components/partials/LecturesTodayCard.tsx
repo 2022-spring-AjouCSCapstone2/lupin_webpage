@@ -3,14 +3,16 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import CardActions from '@mui/material/CardActions';
-import {   
-  Link as RouterLink,
- } from 'react-router-dom';
+import { Link as RouterLink, useHistory } from 'react-router-dom';
 import { Courses } from '../../slices/courses';
 import { timeFormat } from '../../variables';
 import { useSelector } from 'react-redux';
 import { ReducerType } from '../../rootReducer';
 import { User } from '../../slices/user';
+import { SocketContext, SocketEventProps } from '../context/socket';
+import { useContext } from 'react';
+import { useDispatch } from 'react-redux';
+import { enterClassRoom } from '../../slices/classRoom';
 
 interface LectureProps {
   courseData: Courses
@@ -42,8 +44,6 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
     endTime,
     place
   } = timetable;
-
-  const classOpen = false;
   
   const user = useSelector<ReducerType, User>((state) => state.user);
 
@@ -52,18 +52,53 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
   const endHours = Number(endTime.slice(0, 2));
   const endMinutes = Number(endTime.slice(2, 4));
 
-  const timeLeft = () => {
-    if(hours === null || minutes === null) return '로딩중...';
-    const startFullTime = startHours * 60 + startMinutes;
-    const endFullTime = endHours * 60 + endMinutes;
-    const currentFullTime = hours * 60 + minutes;
-    const minutesGap = startFullTime - currentFullTime;
+  const startFullTime = startHours * 60 + startMinutes;
+  const endFullTime = endHours * 60 + endMinutes;
+  const currentFullTime = (hours === null || minutes === null) ? null : hours * 60 + minutes;
+  const minutesGap = currentFullTime === null ? 9999 : startFullTime - currentFullTime;
+  
+  const classOpen = minutesGap <= 10;
 
+  const timeLeft = () => {
+    if(currentFullTime === null) return '로딩중...';
     if(endFullTime <= currentFullTime) return '오늘 수업 끝!';
-    else if(minutesGap <= 10) return '곧 시작';
-    else if(minutesGap < 60) return `${minutesGap}분 뒤 시작`;
-    else return `${Math.floor(minutesGap / 60)}시간 ${minutesGap % 60} 뒤 시작`;
+    else if(minutesGap > 10) {
+      if(minutesGap < 60) return `${minutesGap}분 뒤 시작`;
+      else return `${Math.floor(minutesGap / 60)}시간 ${minutesGap % 60}분 뒤 시작`;
+    }
   }
+
+  const dispatch = useDispatch();
+
+  const socketEvents = useContext<SocketEventProps>(SocketContext);
+  const { createRoom, joinRoom } = socketEvents;
+
+  const history = useHistory();
+
+  const openRoom = (roomId: string) => {
+    const classRoom = {
+      name,
+      courseId,
+      roomId
+    };
+    dispatch(enterClassRoom(classRoom));
+  }
+
+  const handleRejected = () => {
+    history.push('/');
+  }
+
+  const createRoomHandler = () => {
+    createRoom(courseId, openRoom);
+  }
+
+  const joinRoomHandler = () => {
+    joinRoom(courseId, openRoom, handleRejected);
+  }
+
+  // fake
+  const studentClassOpen = true;
+  const professorClassOpen = true;
 
   return (
       <Card
@@ -94,23 +129,48 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
               더보기
             </Button>
             {
-              classOpen
-              ? <Button
-                  variant="contained"
-                  sx={{ width: '22%' }}>
-                    {
                       user.userType === 'STUDENT'
-                      ? '참가하기'
-                      : '생성하기'
+                      ?
+                      (
+                        studentClassOpen
+                        ?
+                        <Button
+                          variant="contained"
+                          onClick={joinRoomHandler}
+                          component={RouterLink}
+                          to={'/classroom'}
+                          sx={{ width: { xs: '24%', md: '22%' } }}>
+                            참가하기
+                        </Button>
+                        :
+                        <Button
+                          variant="contained"
+                          disabled
+                          sx={{ width: { xs: '24%', md: '22%' } }}>
+                            {timeLeft()}
+                        </Button>
+                      )
+                      :
+                      (
+                      professorClassOpen
+                      ?
+                      <Button
+                        variant="contained"
+                        onClick={createRoomHandler}
+                        component={RouterLink}
+                        to={'/classroom'}
+                        sx={{ width: { xs: '24%', md: '22%' } }}>
+                          생성하기
+                      </Button>
+                      :
+                      <Button
+                      variant="contained"
+                      disabled
+                      sx={{ width: { xs: '24%', md: '22%' } }}>
+                        {timeLeft()}
+                      </Button>
+                      )
                     }
-                </Button>
-              : <Button
-                  variant="contained"
-                  disabled
-                  sx={{ width: '22%' }}>
-                    {timeLeft()}
-                </Button>
-            }
           </CardActions>
       </Card>
   );

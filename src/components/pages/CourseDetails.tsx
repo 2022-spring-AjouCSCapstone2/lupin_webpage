@@ -27,21 +27,20 @@ const pageDataProps = {
 export default function CourseDetails({ match }: RouteComponentProps<MatchParams>) {
     const { params: { id } } = match;
     const [tabNumber, setTabNumber] = useState(0);
+    const user = useSelector<ReducerType, User>((state) => state.user);
+    const { userType } = user;
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
       setTabNumber(newValue);
     };
     
-    const user = useSelector<ReducerType, User>((state) => state.user);
-    const { userType } = user;
-
     return(
         <Box>
             <PageTitleBanner props={pageDataProps} />
             <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <Tabs value={tabNumber} onChange={handleChange} centered>
                     <Tab label="수업 상세" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
-                    <Tab label="이전 수업들" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
+                    <Tab label="강의 노트" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="게시판" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     {
                         userType === 'PROFESSOR'
