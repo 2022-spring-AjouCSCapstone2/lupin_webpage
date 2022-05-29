@@ -48,10 +48,13 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
     const course = courses.find((course) => course.id === Number(id))
     const courseId = course?.courseId;
 
+    // const [currentComments, setCurrentComments] = useState<CommentProps[] | null>(null);
+    const [currentComments, setCurrentComments] = useState<CommentProps[]>([]);
     const [newComment, setNewComment] = useState('');
 
     const enterPost = (data: CurrentPostProps) => {
         setCurrentPost(data);
+        // setCurrentComments(data.comments);
     }
 
     const inputHandler = (e: any) => {
@@ -73,8 +76,17 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
         .post(SERVER_URL + '/posts/comments', body, {withCredentials: true})
         .then((res) => {
             console.log(res);
+            const comment = { id: 111999, content: newComment, user: { name: user.name } };
+            setCurrentComments([...currentComments, comment]);
+            const commentInput = document.getElementById('commentInput') as HTMLInputElement;
+            commentInput.value = '';
+
+            // const { id, content, user: { name } } = res.data;
+            // const comment = { id, content, user: { name } };
+            // if(currentComments !== null) setCurrentComments([...currentComments, comment]);
+            // else setCurrentComments([comment]);
         })
-        .catch((error) => alert('댓글을 다는데 실패했습니다.'));
+        .catch((error) => alert('댓글을 달지 못했습니다.'));
     }
 
     useEffect(() => {
@@ -105,65 +117,56 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
                         <Typography
                         sx={{ pb: 10 }}
                         >{currentPost.content}</Typography>
-                        <Box>
-                            <Typography
-                            sx ={{ fontSize: 14, mb: 2, pl: 0.5 }}
-                            >{`댓글 ${currentPost.commentsNumber}`}</Typography>
-                            <Box component='form' onSubmit={submitHandler}>
-                                <TextField
-                                fullWidth
-                                placeholder='댓글을 남겨보세요'
-                                onChange={inputHandler}
-                                sx={{ mb: 2 }}
-                                ></TextField>
-                                <Button
-                                type="submit"
-                                variant='outlined'>댓글</Button>
+                        {
+                            postType === 'NOTICE'
+                            ?
+                            null
+                            :
+                            <Box>
+                                <Typography
+                                sx ={{ fontSize: 14, mb: 2, pl: 0.5 }}
+                                >{`댓글 ${currentComments.length}`}</Typography>
+                                <Box component='form' onSubmit={submitHandler}>
+                                    <TextField
+                                    id="commentInput"
+                                    fullWidth
+                                    placeholder='댓글을 남겨보세요'
+                                    onChange={inputHandler}
+                                    sx={{ mb: 2 }}
+                                    ></TextField>
+                                    <Button
+                                    type="submit"
+                                    variant='outlined'>댓글</Button>
+                                </Box>
+                                <Box id="commentBox" sx={{ mt: 3 }}>
+                                    {
+                                        currentComments !== null
+                                        ?
+                                        currentComments
+                                        .reverse()
+                                        .map((comment, index) => <Comment key={index} comment={comment} />)
+                                        :
+                                        null
+                                    }
+                                </Box>
                             </Box>
-                            <Box sx={{ mt: 3 }}>
-                                {
-                                    currentPost.commentsNumber > 0
-                                    ?
-                                    currentPost.comments
-                                    .map((comment, index) => <Comment key={index} comment={comment} />)
-                                    :
-                                    null
-                                }
-                            </Box>
-                        </Box>
+                        }
                     </Card>
                 </Box>
                 :
                 <Box id="list">
-                    <Card sx={{ mb: 4 }}>
-                        {
-                            posts
-                            ?.map((post) =>
-                            <PostCard
-                            key={post.id}
-                            id={post.id}
-                            title={post.title}
-                            content={post.content}
-                            comments={post.comments}
-                            enterPost={enterPost}
-                            />)
-                            .reduce((acc: (JSX.Element[] | null), cur, index) => 
-                                acc === null
-                                ? [cur]
-                                : [...acc, <Divider key={index}></Divider>, cur], null)
-                        }
-                    </Card>
-                    {
+                  {
                         (postType === 'FREE' || user.userType === 'PROFESSOR')
                         ?
                         <Button
-                        variant="contained"
+                        variant="outlined"
                         component={RouterLink}
                         to={`/courses/${id}/post/${postType}`}
                         sx={{
                             fontSize: 18,
                             fontWeight: 700,
-                            width: '100%'
+                            width: '100%',
+                            mb: 2
                             }}
                         >
                                 글쓰기
@@ -171,6 +174,27 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
                         :
                         null
                     }
+                    <Card>
+                        {
+                            posts
+                            ?.reverse()
+                            .map((post) => {
+                                const postCardData = {
+                                    id: post.id,
+                                    title: post.title,
+                                    content: post.content,
+                                    comments: post.comments,
+                                    postType,
+                                    enterPost
+                                }
+                                return <PostCard postCardData={postCardData} postType={postType} key={post.id}/>
+                            })
+                            .reduce((acc: (JSX.Element[] | null), cur, index) => 
+                                acc === null
+                                ? [cur]
+                                : [...acc, <Divider key={index}></Divider>, cur], null)
+                        }
+                    </Card>
                 </Box>
             }
         </Container>
