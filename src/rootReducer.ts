@@ -6,6 +6,8 @@ import user from './slices/user';
 import todaysLecture from './slices/todaysLecture';
 import courses from './slices/courses';
 import today from './slices/today';
+import classRoom from './slices/classRoom';
+import questionList from './slices/questionList';
 
 const persistConfig = {
   key: "root",
@@ -15,7 +17,9 @@ const persistConfig = {
     "user",
     "todaysLecture",
     "courses",
-    "today"
+    "today",
+    "classRoom",
+    "questionList"
   ]
 };
 
@@ -24,7 +28,9 @@ const reducer = combineReducers({
     user,
     todaysLecture,
     courses,
-    today
+    today,
+    classRoom,
+    questionList
 });
 
 export type ReducerType = ReturnType<typeof reducer>;
