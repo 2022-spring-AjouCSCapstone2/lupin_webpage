@@ -14,7 +14,8 @@ import { useSelector } from 'react-redux';
 import { Courses } from "../../slices/courses";
 
 interface MatchParams {
-    id: string;
+    id: string,
+    postType: string
 }
 
 const PostInput = styled(InputBase)(({ theme }) => ({
@@ -42,7 +43,7 @@ const PostInput = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
-    const { params: { id } } = match;
+    const { params: { id, postType } } = match;
 
     const history = useHistory();
 
@@ -70,8 +71,9 @@ export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
             content: content.trim(),
             courseId,
         };
+        const url = postType === 'FREE' ? '/posts' : '/notices';
         axios
-        .post(SERVER_URL + '/posts', body, {withCredentials: true})
+        .post(SERVER_URL + url, body, {withCredentials: true})
         .then((res) => {
             console.log(res);
             history.push(`/courses/${id}`);

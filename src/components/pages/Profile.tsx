@@ -10,8 +10,11 @@ import Container from '@mui/material/Container';
 import Divider from '@mui/material/Divider';
 import { ReducerType } from '../../rootReducer';
 import { useSelector } from 'react-redux';
-import { User } from '../../slices/user';
+import { setUser, User } from '../../slices/user';
 import { useState } from 'react';
+import { pwRegex, SERVER_URL } from '../../variables';
+import axios from 'axios';
+import { useDispatch } from 'react-redux';
 
 export default function Profile() {
     const user = useSelector<ReducerType, User>((state) => state.user);
@@ -20,8 +23,12 @@ export default function Profile() {
     const [newPw, setNewPw] = useState('');
     const [pwConfirm, setPwConfirm] = useState('');
 
+    const dispatch = useDispatch();
+
     const phoneHandler = (e: any) => {
       e.preventDefault();
+      const replaced = e.target.value.replace(/\D/g, '');
+      e.target.value = replaced;
       setPhone(e.target.value);
     }
     
@@ -38,6 +45,37 @@ export default function Profile() {
     const pwConfirmHandler = (e: any) => {
       e.preventDefault();
       setPwConfirm(e.target.value);
+    }
+
+    const userChangeHandler = (e: any) => {
+      e.preventDefault();
+      const body = { phone: Number(phone) };
+      axios
+      .patch(SERVER_URL + '/users', body, { withCredentials: true })
+      .then((res) => {
+        console.log(res);
+        const updated = {...user, phone: Number(phone)};
+        dispatch(setUser(updated));
+        alert('전화번호가 등록되었습니다.');
+        window.location.reload();
+      })
+      .catch((error) => alert('잘못된 접근입니다.'))
+    }
+    
+    const passwordChangeHandler = (e: any) => {
+      e.preventDefault();
+      if(newPw !== pwConfirm) alert("비밀번호가 일치하지 않습니다.");
+      else if(!newPw.match(pwRegex)) alert("비밀번호는 알파벳, 숫자, 특수문자를 모두 포함한 8~15 글자로 이루어져야 합니다.");
+      else {
+        axios
+        .patch(SERVER_URL + '/users/password', { curPw, newPw }, { withCredentials: true })
+        .then((res) => {
+          console.log(res);
+          alert('비밀번호가 변경되었습니다.');
+          window.location.reload();
+        })
+        .catch((error) => alert('사용자 정보가 잘못되었습니다.'));
+      }
     }
 
     return (
@@ -57,6 +95,8 @@ export default function Profile() {
               Account Information
           </Typography>
           <Card
+            component='form'
+            onSubmit={userChangeHandler}
             sx={{ p: 0, width: { xs: '100%', md: '70%' } }}>
             <CardContent
               sx={{ m: 1 }}>
@@ -113,6 +153,7 @@ export default function Profile() {
               sx={{ display: 'flex', justifyContent: 'end', pr: 3, py: 2, backgroundColor: '#F9FAFB'}}>
               <Button
                 variant="contained"
+                type="submit"
                 sx={{ textTransform: 'none' }}>
                 Save
               </Button>
@@ -124,6 +165,8 @@ export default function Profile() {
 
         {/* Password */}
         <Box
+          component='form'
+          onSubmit={passwordChangeHandler}
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
@@ -173,6 +216,7 @@ export default function Profile() {
               sx={{ display: 'flex', justifyContent: 'end', pr: 3, py: 2, backgroundColor: '#F9FAFB'}}>
               <Button
                 variant="contained"
+                type="submit"
                 sx={{ textTransform: 'none' }}>
                 Change password
               </Button>

@@ -77,7 +77,7 @@ export default function PrivateRoute() {
                             <Route path="/my-posts" exact component={MyPosts} />
                             <Route path="/courses" exact component={Courses} />
                             <Route path="/courses/:id" exact component={CourseDetails} />
-                            <Route path="/courses/:id/post" exact component={NewPost} />
+                            <Route path="/courses/:id/post/:postType" exact component={NewPost} />
                         </Switch>
                     </Box>
                     <Footer />

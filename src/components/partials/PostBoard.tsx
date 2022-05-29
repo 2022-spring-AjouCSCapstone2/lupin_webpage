@@ -15,9 +15,11 @@ import { Courses } from '../../slices/courses';
 import PostCard from './PostCard';
 import { TextField, Typography } from '@mui/material';
 import Comment, { CommentProps }from './Comment';
+import { User } from '../../slices/user';
 
 interface PostBoardProps {
-    id: string
+    id: string,
+    postType: string
 }
 
 export interface PostDataProps {
@@ -36,9 +38,11 @@ export interface CurrentPostProps {
     commentsNumber: number
 }
 
-export default function PostBoard({ id }: PostBoardProps) {
+export default function PostBoard({ id, postType }: PostBoardProps) {
     const [posts, setPosts] = useState<PostDataProps[]>();
     const [currentPost, setCurrentPost] = useState<CurrentPostProps | null>(null);
+    
+    const user = useSelector<ReducerType, User>((state) => state.user);
 
     const courses = useSelector<ReducerType, Courses[]>((state) => state.courses);
     const course = courses.find((course) => course.id === Number(id))
@@ -74,8 +78,9 @@ export default function PostBoard({ id }: PostBoardProps) {
     }
 
     useEffect(() => {
+        const url = postType === 'FREE' ? `/posts/courses/${courseId}` : `/posts/courses/${courseId}?postType=NOTICE`
         axios
-        .get(SERVER_URL + `/posts/courses/${courseId}`, {withCredentials: true})
+        .get(SERVER_URL + url, {withCredentials: true})
         .then((res) => {
             console.log(res);
             if(posts === undefined) setPosts([...res.data]);
@@ -148,18 +153,24 @@ export default function PostBoard({ id }: PostBoardProps) {
                                 : [...acc, <Divider key={index}></Divider>, cur], null)
                         }
                     </Card>
-                    <Button
-                    variant="contained"
-                    component={RouterLink}
-                    to={`/courses/${id}/post`}
-                    sx={{
-                        fontSize: 18,
-                        fontWeight: 700,
-                        width: '100%'
-                        }}
-                    >
-                            글쓰기
-                    </Button>
+                    {
+                        (postType === 'FREE' || user.userType === 'PROFESSOR')
+                        ?
+                        <Button
+                        variant="contained"
+                        component={RouterLink}
+                        to={`/courses/${id}/post/${postType}`}
+                        sx={{
+                            fontSize: 18,
+                            fontWeight: 700,
+                            width: '100%'
+                            }}
+                        >
+                                글쓰기
+                        </Button>
+                        :
+                        null
+                    }
                 </Box>
             }
         </Container>

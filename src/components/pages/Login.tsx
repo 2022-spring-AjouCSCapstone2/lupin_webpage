@@ -69,7 +69,7 @@ export default function Login() {
             .catch((error) => {
                 console.log(error);
                 alert('로그인에 실패했습니다. 로그인 정보를 다시 확인해주세요.');
-                // window.location.reload();
+                window.location.reload();
             });
     }
     

@@ -40,6 +40,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
             <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <Tabs value={tabNumber} onChange={handleChange} centered>
                     <Tab label="수업 상세" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
+                    <Tab label="공지사항" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="강의 노트" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="게시판" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     {
@@ -56,19 +57,24 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                 <TabPanel value={tabNumber} index={0}>
                     <CourseDescription id={id} />
                 </TabPanel>
-
-                {/* 이전 수업들 */}
+                
+                {/* 공지사항 */}
                 <TabPanel value={tabNumber} index={1}>
+                    <PostBoard id={id} postType="NOTICE" />
+                </TabPanel>
+
+                {/* 강의 노트 */}
+                <TabPanel value={tabNumber} index={2}>
                     <PreviousLectures />
                 </TabPanel>
 
                 {/* 게시판 */}
-                <TabPanel value={tabNumber} index={2}>
-                    <PostBoard id={id} />
+                <TabPanel value={tabNumber} index={3}>
+                    <PostBoard id={id} postType="FREE" />
                 </TabPanel>
 
                 {/* 학생 관리 */}
-                <TabPanel value={tabNumber} index={3}>
+                <TabPanel value={tabNumber} index={4}>
                     <Container sx={{ display: 'flex', justifyContent: 'center' }}>
                         <Typography sx={{ display: 'block', my: 10 }}>여기에 디자인 하시면 됩니다.</Typography>
                     </Container>
