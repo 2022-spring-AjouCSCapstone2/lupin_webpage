@@ -13,7 +13,7 @@ import {
 } from 'react-router-dom';
 import axios from "axios";
 import sha256 from 'crypto-js/sha256';
-import { LOCAL_URL } from '../../variables';
+import { SERVER_URL } from '../../variables';
 import { useSelector, useDispatch } from 'react-redux';
 import { ReducerType } from '../../rootReducer';
 import { setLoggedInTrue } from '../../slices/loggedIn';
@@ -42,13 +42,13 @@ export default function Login() {
             password: sha256(password).toString()
         };
         axios
-            .post(LOCAL_URL + '/users/login', body, { withCredentials: true })
+            .post(SERVER_URL + '/users/login', body, { withCredentials: true })
             .then((resLogin) => {
                 console.log('resLogin', resLogin);
                 axios
                 .all([
-                    axios.get(LOCAL_URL + '/courses/today', {withCredentials: true}),
-                    axios.get(LOCAL_URL + '/courses', {withCredentials: true}),
+                    axios.get(SERVER_URL + '/courses/today', {withCredentials: true}),
+                    axios.get(SERVER_URL + '/courses', {withCredentials: true}),
                 ])
                 .then(
                     axios.spread((resToday, resAll) => {
@@ -69,7 +69,7 @@ export default function Login() {
             .catch((error) => {
                 console.log(error);
                 alert('로그인에 실패했습니다. 로그인 정보를 다시 확인해주세요.');
-                window.location.reload();
+                // window.location.reload();
             });
     }
     

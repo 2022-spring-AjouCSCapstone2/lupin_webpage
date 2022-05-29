@@ -2,10 +2,23 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { PostDataProps } from './PostBoard';
 
-export default function PostCard({ id, title, content, comments }: PostDataProps) {
+export default function PostCard({ id, title, content, comments, enterPost }: PostDataProps) {
     const commentsNumber = comments ? comments.length : 0;
+
+    const enterHandler = (e: any) => {
+        enterPost({ id, title, content, comments, commentsNumber });
+    }
+
     return (
-        <Box sx={{ py: 3, px: 5, display: 'flex', flexDirection: 'column' }}>
+        <Box
+        onClick={enterHandler}
+        sx={{
+            py: 3,
+            px: 5,
+            display: 'flex',
+            flexDirection: 'column',
+            cursor: 'pointer'
+            }}>
             <Typography sx={{ fontSize: 18, mb: 2 }}>{title}</Typography>
             <Typography sx={{ fontSize: 14, mb: 2 }} color="text.secondary">
                 {content}

@@ -4,7 +4,7 @@ import LectureCard from '../partials/LecturesTodayCard';
 import PageTitleBanner from '../partials/PageTitleBanner';
 import { ReducerType } from '../../rootReducer';
 import { useSelector, useDispatch } from 'react-redux';
-import { getToday, LOCAL_URL } from '../../variables';
+import { getToday, SERVER_URL } from '../../variables';
 import { setToday } from '../../slices/today';
 import { setTodaysLecture } from '../../slices/todaysLecture';
 import { Courses } from '../../slices/courses';
@@ -23,7 +23,7 @@ export default function Home() {
     const today = useSelector<ReducerType>((state) => state.today);
     if(today !== getToday()) {
         axios
-        .get(LOCAL_URL + '/courses/today', {withCredentials: true})
+        .get(SERVER_URL + '/courses/today', {withCredentials: true})
         .then((res) => {
             dispatch(setTodaysLecture(res.data));
             dispatch(setToday());

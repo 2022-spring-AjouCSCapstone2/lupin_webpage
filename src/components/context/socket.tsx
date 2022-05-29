@@ -1,5 +1,5 @@
 import { io, Socket } from "socket.io-client";
-import { LOCAL_URL } from '../../variables';
+import { SERVER_URL } from '../../variables';
 import { createContext } from "react";
 import { QuestionProps } from '../../slices/questionList';
 
@@ -61,7 +61,7 @@ export const socketEvents = {
     connectUserSocket: (
         receiveQuestion: (question: QuestionProps) => void,
         receiveQuiz: (quizData: ReceivedQuizDataProps) => void) => {
-        socket = io(LOCAL_URL, {withCredentials: true});
+        socket = io(SERVER_URL, {withCredentials: true});
 
         socket.on("connect", () => {
             console.log('socket id', socket.id);

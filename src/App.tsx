@@ -8,11 +8,6 @@ import PrivateRoute from './components/PrivateRoute';
 import { SocketContext, socketEvents } from './components/context/socket';
 
 export default function App() {
-  // window.addEventListener('beforeunload', (event) => {
-  //   event.preventDefault();
-  //   event.returnValue = "";
-  //   return '테스트 메시지';
-  // });
   return (
       <SocketContext.Provider value={socketEvents}>
           <Router>

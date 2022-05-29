@@ -7,8 +7,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { QuizAnswerProps, ReceivedQuizDataProps } from '../context/socket';
-import { useState, useContext } from 'react';
-import { SocketContext, SocketEventProps } from '../context/socket';
+import { useState } from 'react';
 
 const style = {
     position: 'absolute' as 'absolute',

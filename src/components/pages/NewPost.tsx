@@ -7,7 +7,7 @@ import { RouteComponentProps } from "react-router";
 import { alpha, styled } from '@mui/material/styles';
 import { useState } from "react";
 import axios from "axios";
-import { LOCAL_URL } from "../../variables";
+import { SERVER_URL } from "../../variables";
 import { useHistory } from 'react-router-dom';
 import { ReducerType } from '../../rootReducer';
 import { useSelector } from 'react-redux';
@@ -71,7 +71,7 @@ export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
             courseId,
         };
         axios
-        .post(LOCAL_URL + '/posts', body, {withCredentials: true})
+        .post(SERVER_URL + '/posts', body, {withCredentials: true})
         .then((res) => {
             console.log(res);
             history.push(`/courses/${id}`);

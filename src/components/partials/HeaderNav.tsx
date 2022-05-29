@@ -16,6 +16,7 @@ import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { setLoggedInFalse } from '../../slices/loggedIn';
 import { setNullUser } from '../../slices/user';
+import { SERVER_URL } from '../../variables';
 
 const pages = [
   {
@@ -55,8 +56,7 @@ export default function HeaderNav() {
 
   const handleLogout = () => {
    axios
-    // .get('http://3.37.234.117:5000/users/logout', { withCredentials: true })
-    .get('http://localhost:5000/users/logout', { withCredentials: true })
+    .get(SERVER_URL + '/users/logout', { withCredentials: true })
     .then((res) => {
       console.log(res);
       dispatch(setLoggedInFalse());
