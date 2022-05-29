@@ -15,6 +15,7 @@ import { useState } from 'react';
 import { pwRegex, SERVER_URL } from '../../variables';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
+import sha256 from 'crypto-js/sha256';
 
 export default function Profile() {
     const user = useSelector<ReducerType, User>((state) => state.user);
@@ -66,9 +67,13 @@ export default function Profile() {
       e.preventDefault();
       if(newPw !== pwConfirm) alert("비밀번호가 일치하지 않습니다.");
       else if(!newPw.match(pwRegex)) alert("비밀번호는 알파벳, 숫자, 특수문자를 모두 포함한 8~15 글자로 이루어져야 합니다.");
-      else {
+      else {      
+        const body = { 
+          password: sha256(curPw).toString(),
+          newPassword: sha256(newPw).toString()
+        };
         axios
-        .patch(SERVER_URL + '/users/password', { curPw, newPw }, { withCredentials: true })
+        .patch(SERVER_URL + '/users/password', body, { withCredentials: true })
         .then((res) => {
           console.log(res);
           alert('비밀번호가 변경되었습니다.');
