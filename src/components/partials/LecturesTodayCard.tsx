@@ -58,7 +58,7 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
   const minutesGap = currentFullTime === null ? 9999 : startFullTime - currentFullTime;
   const classOpen = currentFullTime === null
                     ? false
-                    : ( minutesGap <= 10 && endFullTime <= currentFullTime );
+                    : ( minutesGap <= 10 && currentFullTime <= endFullTime );
 
   const timeLeft = () => {
     if(currentFullTime === null) return '로딩중...';
