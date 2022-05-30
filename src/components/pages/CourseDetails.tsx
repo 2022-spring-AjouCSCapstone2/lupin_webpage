@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import CourseDescription from '../partials/CourseDescription';
 import PreviousLectures from '../partials/PreviousLectures';
 import PostBoard from '../partials/PostBoard';
+import StatisticsTable from "../partials/StatisticsTable";
 import { RouteComponentProps } from "react-router";
 import { useState } from 'react';
 import { ReducerType } from '../../rootReducer';
@@ -57,7 +58,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                 <TabPanel value={tabNumber} index={0}>
                     <CourseDescription id={id} />
                 </TabPanel>
-                
+
                 {/* 공지사항 */}
                 <TabPanel value={tabNumber} index={1}>
                     <PostBoard id={id} postType="NOTICE" />
@@ -75,9 +76,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
 
                 {/* 학생 관리 */}
                 <TabPanel value={tabNumber} index={4}>
-                    <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Typography sx={{ display: 'block', my: 10 }}>여기에 디자인 하시면 됩니다.</Typography>
-                    </Container>
+                    <StatisticsTable id={id} />
                 </TabPanel>
             </Box>
         </Box>
