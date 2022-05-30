@@ -71,7 +71,7 @@ export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
             content: content.trim(),
             courseId,
         };
-        const url = postType === 'FREE' ? '/posts' : '/notices';
+        const url = postType === 'FREE' ? '/posts' : '/posts/notices';
         axios
         .post(SERVER_URL + url, body, {withCredentials: true})
         .then((res) => {

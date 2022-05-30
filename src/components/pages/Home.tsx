@@ -10,6 +10,7 @@ import { setTodaysLecture } from '../../slices/todaysLecture';
 import { Courses } from '../../slices/courses';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
+import { Typography } from '@mui/material';
 
 const pageDataProps = {
     title: '오늘의 강의',
@@ -55,8 +56,14 @@ export default function Home() {
             <PageTitleBanner props={pageDataProps} />
             <Container maxWidth="md">
                 {
+                    todaysLecture.length > 0
+                    ?
                     todaysLecture.map((data, index) =>
                         <LectureCard key={index} courseData={data} hours={currentHours} minutes={currentMinutes} />)
+                    :
+                    <Box sx={{ width: '100%', py: 10 }}>
+                        <Typography sx={{ textAlign: 'center' }}>오늘은 수업이 없어요~</Typography>
+                    </Box>
                 }
             </Container>      
         </Box>
