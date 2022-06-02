@@ -30,7 +30,7 @@ export default function ClassRoom() {
     const handleExit = () => {
         if(window.confirm('정말 퇴장하시겠습니까?')) {
             dispatch(exitClassRoom());
-            leaveRoom(roomId);
+            leaveRoom({ roomId });
             dispatch(emptyQuestions());
             history.push('/');
         }

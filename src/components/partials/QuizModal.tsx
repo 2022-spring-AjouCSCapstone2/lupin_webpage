@@ -34,7 +34,7 @@ export default function QuizModal({ open, quizData, submitQuiz }: ModalProps) {
 
     const answerHandler = (e: any) => {
         e.preventDefault();
-        setAnswer(e.target.value);
+        setAnswer(Number(e.target.value));
     }
 
     const submitHandler = (e: any) => {

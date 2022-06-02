@@ -82,6 +82,7 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
       courseId,
       roomId
     };
+    console.log(`attended room: ${roomId}, on course ${courseId}`);
     dispatch(enterClassRoom(classRoom));
   }
 
@@ -96,8 +97,6 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
   const joinRoomHandler = () => {
     joinRoom(courseId, openRoom, handleRejected);
   }
-
-  console.log("classOpen", classOpen);
 
   return (
       <Card

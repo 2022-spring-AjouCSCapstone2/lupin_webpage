@@ -13,9 +13,11 @@ import { ReducerType } from '../../rootReducer';
 import { useSelector } from 'react-redux';
 import { Courses } from '../../slices/courses';
 import PostCard from './PostCard';
-import { TextField, Typography } from '@mui/material';
+import { IconButton, TextField, Typography } from '@mui/material';
 import Comment, { CommentProps }from './Comment';
 import { User } from '../../slices/user';
+import { red } from '@mui/material/colors';
+import { ArrowBack } from '@mui/icons-material';
 
 interface PostBoardProps {
     id: string,
@@ -48,13 +50,26 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
     const course = courses.find((course) => course.id === Number(id))
     const courseId = course?.courseId;
 
-    // const [currentComments, setCurrentComments] = useState<CommentProps[] | null>(null);
     const [currentComments, setCurrentComments] = useState<CommentProps[]>([]);
     const [newComment, setNewComment] = useState('');
 
+    const backToListHandler = (e: any) => {
+        e.preventDefault();
+        setCurrentPost(null);
+    }
+
     const enterPost = (data: CurrentPostProps) => {
         setCurrentPost(data);
-        // setCurrentComments(data.comments);
+        const processed = data.comments.map((comment) => {
+            return {
+                id: comment.id,
+                content: comment.content,
+                user: {
+                    name: comment.user.name
+                }
+            };
+        }).reverse();
+        setCurrentComments([...processed]);
     }
 
     const inputHandler = (e: any) => {
@@ -76,15 +91,22 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
         .post(SERVER_URL + '/posts/comments', body, {withCredentials: true})
         .then((res) => {
             console.log(res);
-            const comment = { id: 111999, content: newComment, user: { name: user.name } };
-            setCurrentComments([...currentComments, comment]);
+            const comment = {
+                id: res.data.id,
+                content: newComment,
+                user: { name: user.name }
+            };
+            setCurrentComments([comment, ...currentComments]);
+            // update comment of posts
+            const updatedPosts = posts?.map((post) => {
+                if(post.id === currentPost.id) {
+                    post.comments.push(res.data);
+                }
+                return post;
+            });
+            setPosts(updatedPosts);
             const commentInput = document.getElementById('commentInput') as HTMLInputElement;
             commentInput.value = '';
-
-            // const { id, content, user: { name } } = res.data;
-            // const comment = { id, content, user: { name } };
-            // if(currentComments !== null) setCurrentComments([...currentComments, comment]);
-            // else setCurrentComments([comment]);
         })
         .catch((error) => alert('댓글을 달지 못했습니다.'));
     }
@@ -95,8 +117,7 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
         .get(SERVER_URL + url, {withCredentials: true})
         .then((res) => {
             console.log(res);
-            if(posts === undefined) setPosts([...res.data]);
-            else setPosts([...posts, ...res.data]);
+            if(posts === undefined) setPosts([...res.data.reverse()]);
         })
         .catch((error) => alert('게시물을 불러오는데 실패했습니다.'));
     }, []);
@@ -108,6 +129,11 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
                 ?
                 <Box id="individual">
                     <Card sx={{ p: 3 }}>
+                        <IconButton
+                        onClick={backToListHandler}
+                        sx={{ p: 0, mb: 3 }}>
+                            <ArrowBack />
+                        </IconButton>
                         <Typography
                         sx={{
                             fontSize: 20,
@@ -143,7 +169,6 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
                                         currentComments !== null
                                         ?
                                         currentComments
-                                        .reverse()
                                         .map((comment, index) => <Comment key={index} comment={comment} />)
                                         :
                                         null
@@ -177,8 +202,7 @@ export default function PostBoard({ id, postType }: PostBoardProps) {
                     <Card>
                         {
                             posts
-                            ?.reverse()
-                            .map((post) => {
+                            ?.map((post) => {
                                 const postCardData = {
                                     id: post.id,
                                     title: post.title,
