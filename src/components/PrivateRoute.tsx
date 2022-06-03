@@ -18,13 +18,16 @@ import { ReducerType } from '../rootReducer';
 import ClassRoom from './pages/ClassRoom';
 import { QuizAnswerProps, ReceivedQuizDataProps, SocketContext } from './context/socket';
 import { useContext, useState } from 'react';
-import { ClassRoom as ClassRoomProps } from '../slices/classRoom';
-import { QuestionProps, setQuestions } from "../slices/questionList";
+import { ClassRoom as ClassRoomProps, exitClassRoom } from '../slices/classRoom';
+import { QuestionProps, setQuestions, emptyQuestions } from "../slices/questionList";
 import { useDispatch } from 'react-redux';
 import QuizModal from "./partials/QuizModal";
+import { useHistory } from "react-router-dom";
+import { User } from '../slices/user';
 
 export default function PrivateRoute() {
     const loggedIn = useSelector<ReducerType>((state) => state.loggedIn);
+    const user = useSelector<ReducerType, User>((state) => state.user);
     const classRoom = useSelector<ReducerType, ClassRoomProps>((state) => state.classRoom);
     const { connectUserSocket, answerQuiz } = useContext(SocketContext);
     
@@ -32,8 +35,19 @@ export default function PrivateRoute() {
 
     const dispatch = useDispatch();
     
+    const history = useHistory();
+    
     const [modalOpen, setModalOpen] = useState(false);
     const [quiz, setQuiz] = useState<ReceivedQuizDataProps | null>(null);
+
+    const handleClassRoomShutDown = () => {
+        if(user.userType === 'STUDENT') {
+            alert('강의자에 의해 수업이 종료되었습니다.');
+            dispatch(emptyQuestions());
+            dispatch(exitClassRoom());
+            history.push('/');
+        }
+    }
 
     const receiveQuestion = (questionData: QuestionProps) => {
         dispatch(setQuestions({ questionData, point: false }));
@@ -51,7 +65,7 @@ export default function PrivateRoute() {
 
     if(loggedIn && !socketConnected) {
         setSocketConnected(true);
-        connectUserSocket(receiveQuestion, receiveQuiz);
+        connectUserSocket(receiveQuestion, receiveQuiz, handleClassRoomShutDown);
     }
 
     return (

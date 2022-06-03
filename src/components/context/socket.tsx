@@ -9,7 +9,8 @@ export interface SocketEventProps {
     createRoom: (courseId: string, openRoom: (roomId: string) => void) => void,
     connectUserSocket: (
         receiveQuestion: (question: QuestionProps) => void,
-        receiveQuiz: (quizData: ReceivedQuizDataProps) => void) => void,
+        receiveQuiz: (quizData: ReceivedQuizDataProps) => void,
+        handleClassRoomShutDown: () => void) => void,
     leaveRoom: ({ roomId }: LeaveRoomProps) => void,
     joinRoom: (courseId: string, openRoom: (roomId: string) => void, handleRejected: () => void) => void,
     makeQuestion: (
@@ -67,7 +68,8 @@ export const socketEvents = {
     },
     connectUserSocket: (
         receiveQuestion: (question: QuestionProps) => void,
-        receiveQuiz: (quizData: ReceivedQuizDataProps) => void) => {
+        receiveQuiz: (quizData: ReceivedQuizDataProps) => void,
+        handleClassRoomShutDown: () => void) => {
         socket = io(SERVER_URL, {withCredentials: true});
 
         socket.on("connect", () => {
@@ -85,6 +87,10 @@ export const socketEvents = {
         socket.on('quiz', (data) => {
             console.log(data);
             receiveQuiz(data);
+        });
+
+        socket.on('roomClosed', (data) => {
+            handleClassRoomShutDown();
         });
     },
     leaveRoom: ({ roomId }: LeaveRoomProps) => {
