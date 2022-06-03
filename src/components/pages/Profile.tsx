@@ -81,7 +81,7 @@ export default function Profile() {
         alert('전화번호가 등록되었습니다.');
         window.location.reload();
       })
-      .catch((error) => alert('잘못된 접근입니다.'))
+      .catch((error) => alert('잘못된 접근입니다.'));
     }
     
     const passwordChangeHandler = (e: any) => {
