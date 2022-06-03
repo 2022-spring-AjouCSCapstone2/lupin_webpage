@@ -16,7 +16,6 @@ import PostCard from './PostCard';
 import { IconButton, TextField, Typography } from '@mui/material';
 import Comment, { CommentProps }from './Comment';
 import { User } from '../../slices/user';
-import { red } from '@mui/material/colors';
 import { ArrowBack } from '@mui/icons-material';
 
 interface PostBoardProps {

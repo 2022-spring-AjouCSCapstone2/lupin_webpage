@@ -66,7 +66,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
 
                 {/* 강의 노트 */}
                 <TabPanel value={tabNumber} index={2}>
-                    <PreviousLectures />
+                    <PreviousLectures id={id} />
                 </TabPanel>
 
                 {/* 게시판 */}

@@ -7,6 +7,7 @@ import Modal from '@mui/material/Modal';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useState } from 'react';
+import { LectureDataProps } from './PreviousLectures';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -20,20 +21,68 @@ const style = {
     p: 4,
 };
 
-interface SummaryProps {
-    keyword: string,
-    text: string
-}
-
 interface LectureNoteProps {
-    name: string,
-    type: string,
-    textData: string | null,
-    objectData: SummaryProps | null
+    logData: LectureDataProps
 }
 
-export default function LectureNoteModal({ name, type, textData, objectData }: LectureNoteProps) {
+export default function LectureNoteModal({ logData }: LectureNoteProps) {
+    const { type, recordKey, script, summary, content } = logData;
     const [open, setOpen] = useState(false);
+
+    const downloadRecordingHandler = (e: any) => {
+        e.preventDefault();
+        const newTab = recordKey ? window.open(recordKey, '_blank') : null;
+        if(newTab) newTab.focus();
+    }
+
+    let name;
+    let modalContent;
+    switch (type) {
+        case 'QUESTION':
+            name = '질문 내용';
+            modalContent = (
+                <Box sx={{ mt: 4 }}>
+                    <Typography>{content}</Typography>
+                </Box>
+            );
+            break;
+        case 'RECORDING':
+            name = '녹음 자료';
+            modalContent = (
+                <Box sx={{ mt: 4 }}>
+                    {
+                        recordKey === null
+                        ?
+                        <Typography>링크가 소실되었습니다.</Typography>
+                        :
+                        <Typography
+                        onClick={downloadRecordingHandler}
+                        sx={{
+                            color: 'blue',
+                            textDecoration: 'underline',
+                            cursor: 'pointer'                            
+                        }}>이 곳에서 녹음 파일을 다운 받으세요.</Typography>
+                    }
+                </Box>
+            );
+            break;
+        case 'SCRIPT':
+            name = '수업 대본';
+            modalContent = (
+                <Box sx={{ mt: 4 }}>
+                    <Typography>{script}</Typography>
+                </Box>
+            );
+            break;
+        case 'SUMMARY':
+            name = '수업 요약';
+            modalContent = (
+                <Box sx={{ mt: 4 }}>
+                    <Typography>{summary}</Typography>
+                </Box>
+            );
+            break;
+    }
 
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
@@ -58,32 +107,7 @@ export default function LectureNoteModal({ name, type, textData, objectData }: L
                 <Typography id="modal-modal-title" variant="h6" component="h2">
                     {name}
                 </Typography>
-                {
-                    type === 'object' && objectData !== null
-                    ?
-                    <Box sx={{ mt: 4 }}>
-                        <Typography sx={{ mb: 1}}>-----keywords-----</Typography>
-                        <Typography sx={{ mb: 2}}>{objectData.keyword}</Typography>
-                        <Typography sx={{ mb: 1}}>-----summary-----</Typography>
-                        <Typography sx={{ mb: 2}}>{objectData.text}</Typography>
-                    </Box>
-                    :
-                    <Typography id="modal-modal-description" sx={{ mt: 4 }}>
-                        {
-                            textData === null
-                            ?
-                            null
-                            :
-                            (
-                                type === 'link'
-                                ?
-                                <a href={textData}>링크를 통해 다운 받으세요.</a>
-                                :
-                                textData
-                            )
-                        }                    
-                    </Typography>
-                }
+                {modalContent}
                 </Box>
             </Modal>
         </Box>
