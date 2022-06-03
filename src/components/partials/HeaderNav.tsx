@@ -29,7 +29,7 @@ const pages = [
   },
   {
     name: '소개',
-    route: '#',
+    route: '/introduce',
   }
 ];
 

@@ -24,6 +24,7 @@ import { useDispatch } from 'react-redux';
 import QuizModal from "./partials/QuizModal";
 import { useHistory } from "react-router-dom";
 import { User } from '../slices/user';
+import Introduce from './pages/Introduce';
 
 export default function PrivateRoute() {
     const loggedIn = useSelector<ReducerType>((state) => state.loggedIn);
@@ -89,6 +90,7 @@ export default function PrivateRoute() {
                             <Route path="/" exact component={Home} />
                             <Route path="/profile" exact component={Profile} />
                             <Route path="/my-posts" exact component={MyPosts} />
+                            <Route path="/introduce" exact component={Introduce} />
                             <Route path="/courses" exact component={Courses} />
                             <Route path="/courses/:id" exact component={CourseDetails} />
                             <Route path="/courses/:id/post/:postType" exact component={NewPost} />

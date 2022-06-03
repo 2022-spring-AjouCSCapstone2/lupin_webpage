@@ -77,7 +77,10 @@ export default function PreviousLectures({ id }: PreviousLectureProps) {
                 });
             setLectures(dates);
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+            console.log(error);
+            alert('강의 노트를 불러오는데 실패했습니다.');
+        });
     }, [])
 
 
