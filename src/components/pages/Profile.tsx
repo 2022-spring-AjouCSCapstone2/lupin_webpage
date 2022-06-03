@@ -16,6 +16,7 @@ import { pwRegex, SERVER_URL } from '../../variables';
 import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import sha256 from 'crypto-js/sha256';
+import { Input, InputLabel, Modal, CircularProgress } from '@mui/material';
 
 export default function Profile() {
     const user = useSelector<ReducerType, User>((state) => state.user);
@@ -23,6 +24,11 @@ export default function Profile() {
     const [curPw, setCurPw] = useState('');
     const [newPw, setNewPw] = useState('');
     const [pwConfirm, setPwConfirm] = useState('');
+    const [avatarFile, setAvatarFile] = useState<Blob>();
+    
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
 
     const dispatch = useDispatch();
 
@@ -46,6 +52,21 @@ export default function Profile() {
     const pwConfirmHandler = (e: any) => {
       e.preventDefault();
       setPwConfirm(e.target.value);
+    }
+
+    const imageSelectHandler = (e: any) => {
+      e.preventDefault();
+      const file = e.target.files[0];
+      setAvatarFile(file);
+      const avatar = document.getElementById('avatarPreview');
+      if(avatar) {
+        avatar.innerHTML = '';
+        const image = document.createElement('img');
+        image.style.width = '100%';
+        image.style.height = '100%';
+        image.src = URL.createObjectURL(file);
+        avatar.appendChild(image);
+      }
     }
 
     const userChangeHandler = (e: any) => {
@@ -83,9 +104,52 @@ export default function Profile() {
       }
     }
 
+    const avatarChangeHandler = (e: any) => {
+      e.preventDefault();
+      const formData = new FormData();
+      if(avatarFile) {
+        formData.append("image", avatarFile);
+        handleOpen();
+        axios
+        .patch(SERVER_URL + '/users/image', formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data'
+          },
+          withCredentials: true
+        })
+        .then((res) => {
+          console.log(res);
+          handleClose();
+          const updatedUser = {...user, path: res.data.path};
+          dispatch(setUser(updatedUser));
+          alert('프로필 사진을 변경했습니다.');
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log(error);
+          handleClose();
+          alert('프로필 사진 변경에 실패했습니다.');
+        });
+      }
+    }
+
     return (
       <Container
         sx={{ pt: { xs: 7, md: 10 } }}>
+        {/* Loading Modal */}
+        <Modal
+        open={open}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+          <CircularProgress 
+          sx={{
+            position: 'absolute' as 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+          }}/>
+        </Modal>
 
         {/* Account Information */}
         <Box
@@ -233,6 +297,8 @@ export default function Profile() {
 
         {/*  Avatar */}
         <Box
+          component='form'
+          onSubmit={avatarChangeHandler}
           sx={{
             display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
@@ -249,23 +315,60 @@ export default function Profile() {
               sx={{ m: 1 }}>
               <Box
                 sx={{ display: 'flex', alignItems: 'center' }}>
-                 <Avatar
-                    alt="Remy Sharp"
-                    src="/broken-image.jpg"
+                {
+                  user.path === null
+                  ?
+                  <Avatar
+                    alt="Avatar"                    
+                    id="avatarPreview"
                     sx={{ width: 60, height: 60, mr: 2 }}
-                  />          
+                  />
+                  :
+                  <Avatar
+                  alt="Avatar"
+                  id="avatarPreview"
+                  sx={{ width: 60, height: 60, mr: 2 }}
+                  >
+                    <img src={user.path} alt="Avatar" style={{ width: '100%', height: '100%' }}/>
+                  </Avatar>
+                }
                   <Box>
-                    <Button
-                      variant="outlined"
-                      sx={{ textTransform: 'none', color: 'black', borderColor: '#a8a8a8'}}>
-                        Choose image
-                    </Button>  
+                      <Button
+                        variant="outlined"
+                        sx={{
+                          textTransform: 'none',
+                          color: 'black',
+                          borderColor: '#a8a8a8'
+                          }}>
+                            <Input
+                            id="fileInput"
+                            type="file"
+                            inputProps={{
+                              accept: 'image/*'
+                            }}
+                            onChange={imageSelectHandler}
+                            sx={{
+                              display: 'none'
+                            }}
+                            />             
+                            <InputLabel
+                            htmlFor="fileInput"
+                            sx={{
+                              color: 'black',
+                              fontSize: 14,
+                              cursor: 'pointer'
+                            }}
+                            >
+                              Choose image
+                            </InputLabel>
+                      </Button>
                   </Box>        
               </Box>
             </CardContent>
             <CardActions
               sx={{ display: 'flex', justifyContent: 'end', pr: 3, py: 2, backgroundColor: '#F9FAFB'}}>
               <Button
+                type='submit'
                 variant="contained"
                 sx={{ textTransform: 'none' }}>
                 Upload & Save

@@ -13,10 +13,11 @@ import {
   Link as RouterLink,
  } from 'react-router-dom';
 import axios from 'axios';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setLoggedInFalse } from '../../slices/loggedIn';
-import { setNullUser } from '../../slices/user';
+import { setNullUser, User } from '../../slices/user';
 import { SERVER_URL } from '../../variables';
+import { ReducerType } from '../../rootReducer';
 
 const pages = [
   {
@@ -36,6 +37,8 @@ const pages = [
 export default function HeaderNav() {
   const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
+  
+  const user = useSelector<ReducerType, User>((state) => state.user);
 
   const dispatch = useDispatch();
 
@@ -205,10 +208,17 @@ export default function HeaderNav() {
               onClick={handleOpenUserMenu}
               sx={{ p: 0 }}
             >
-              <Avatar
-                alt="Remy Sharp"
-                src="/static/images/avatar/2.jpg"
-              />
+              {
+                user.path === null
+                ?
+                <Avatar
+                  alt="Avatar"
+                />
+                :
+                <Avatar alt="Avatar">
+                  <img src={user.path} alt="Avatar" style={{ width: '100%', height: '100%' }}/>
+                </Avatar>
+              }
             </IconButton>
             <Menu
               sx={{ mt: '45px' }}
