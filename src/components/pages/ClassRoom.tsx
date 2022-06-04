@@ -1,18 +1,26 @@
-import { Button, Typography, List } from "@mui/material";
-import Box from "@mui/material/Box";
-import TextField from "@mui/material/TextField";
+import {
+    Button,
+    Typography,
+    List,
+    CircularProgress,
+    Modal,
+    Box,
+    TextField
+} from "@mui/material";
 import { ReducerType } from '../../rootReducer';
 import { useDispatch, useSelector } from 'react-redux';
 import { ClassRoom as ClassRoomProps, exitClassRoom } from '../../slices/classRoom';
 import { useHistory } from "react-router-dom";
 import { SocketContext, SocketEventProps } from '../context/socket';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import Questions from "../partials/Questions";
 import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 import { QuestionProps, QuestionListProps, setQuestions, emptyQuestions } from "../../slices/questionList";
 import { User } from "../../slices/user";
 import MakeQuizModal from "../partials/MakeQuizModal";
+import axios from "axios";
+import { SERVER_URL } from "../../variables";
 
 export default function ClassRoom() {    
     const user = useSelector<ReducerType, User>((state) => state.user);
@@ -25,14 +33,69 @@ export default function ClassRoom() {
     const socketEvents = useContext<SocketEventProps>(SocketContext);
     const { leaveRoom, makeQuestion } = socketEvents;
     const [question, setQuestion] = useState('');
-    const [checked, setChecked] = useState(true);
+    const [checked, setChecked] = useState(true);    
+    const [open, setOpen] = useState(false);
+    const handleOpen = () => setOpen(true);
+    const handleClose = () => setOpen(false);
+  
+    const audioChunks = useRef<Blob[]>([]);
+    
+    let stream = useRef<MediaStream>();
+    let mediaRecorder = useRef<MediaRecorder>();
+    
+    const record = async () => {
+        stream.current = await navigator.mediaDevices.getUserMedia({
+            audio: true,
+            video: false,
+        });
+    
+        if(stream !== undefined) {
+            mediaRecorder.current = new MediaRecorder(stream.current);     
+            
+            mediaRecorder.current.start(100);
+
+            mediaRecorder.current.addEventListener("dataavailable", event => {
+                audioChunks.current.push(event.data);
+            });
+        }
+    }
+
+    const removeClassData = () => {
+        dispatch(exitClassRoom());
+        leaveRoom({ roomId });
+        dispatch(emptyQuestions());
+        history.push('/');
+    }
 
     const handleExit = () => {
-        if(window.confirm('정말 퇴장하시겠습니까?')) {
-            dispatch(exitClassRoom());
-            leaveRoom(roomId);
-            dispatch(emptyQuestions());
-            history.push('/');
+        if(window.confirm('정말 퇴장하시겠습니까?')) {        
+            if(user.userType === 'PROFESSOR') {
+                if(mediaRecorder.current !== undefined) {
+                    mediaRecorder.current.stop();
+                    stream.current?.getTracks().forEach(track => track.stop());
+                }
+                handleOpen();
+                const audioBlob = new Blob(audioChunks.current, { 'type' : 'audio/ogg; codecs=opus' });
+                if(audioBlob) {
+                    const formData = new FormData();
+                    formData.append("audio", audioBlob);
+                    axios
+                    .post(SERVER_URL + `/courses/${courseId}/logs`, formData, { withCredentials: true})
+                    .then((res) => {
+                        console.log(res);
+                        handleClose();
+                        alert('녹음 파일이 업로드 되었습니다.');
+                        removeClassData();
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                        handleClose();
+                        removeClassData();
+                    });
+                }
+            } else {
+                removeClassData();
+            }
         }
     }
 
@@ -74,8 +137,29 @@ export default function ClassRoom() {
         window.scrollTo(0, 100000);
     }, [questionList])
 
+    useEffect(() => {
+        if(user.userType === 'PROFESSOR') {
+            record();
+        }
+    }, []);
+
     return (
         <Box sx={{ minWidth: '600px' }}>
+            {/* Loading Modal */}
+            <Modal
+            open={open}
+            aria-labelledby="modal-modal-title"
+            aria-describedby="modal-modal-description"
+        >
+            <CircularProgress 
+            sx={{
+                position: 'absolute' as 'absolute',
+                top: '50%',
+                left: '50%',
+                transform: 'translate(-50%, -50%)',
+            }}/>
+            </Modal>
+
             <Box
             sx={{
                 zIndex: 10,

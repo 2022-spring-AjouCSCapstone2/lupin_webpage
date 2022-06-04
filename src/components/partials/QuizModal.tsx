@@ -7,8 +7,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { QuizAnswerProps, ReceivedQuizDataProps } from '../context/socket';
-import { useState, useContext } from 'react';
-import { SocketContext, SocketEventProps } from '../context/socket';
+import { useState } from 'react';
 
 const style = {
     position: 'absolute' as 'absolute',
@@ -35,7 +34,7 @@ export default function QuizModal({ open, quizData, submitQuiz }: ModalProps) {
 
     const answerHandler = (e: any) => {
         e.preventDefault();
-        setAnswer(e.target.value);
+        setAnswer(Number(e.target.value));
     }
 
     const submitHandler = (e: any) => {

@@ -7,14 +7,15 @@ import { RouteComponentProps } from "react-router";
 import { alpha, styled } from '@mui/material/styles';
 import { useState } from "react";
 import axios from "axios";
-import { LOCAL_URL } from "../../variables";
+import { SERVER_URL } from "../../variables";
 import { useHistory } from 'react-router-dom';
 import { ReducerType } from '../../rootReducer';
 import { useSelector } from 'react-redux';
 import { Courses } from "../../slices/courses";
 
 interface MatchParams {
-    id: string;
+    id: string,
+    postType: string
 }
 
 const PostInput = styled(InputBase)(({ theme }) => ({
@@ -42,7 +43,7 @@ const PostInput = styled(InputBase)(({ theme }) => ({
 }));
 
 export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
-    const { params: { id } } = match;
+    const { params: { id, postType } } = match;
 
     const history = useHistory();
 
@@ -70,10 +71,11 @@ export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
             content: content.trim(),
             courseId,
         };
+        const url = postType === 'FREE' ? '/posts' : '/posts/notices';
         axios
-        .post(LOCAL_URL + '/posts', body, {withCredentials: true})
+        .post(SERVER_URL + url, body, {withCredentials: true})
         .then((res) => {
-            console.log(res);
+            // console.log(res);
             history.push(`/courses/${id}`);
         })
         .catch((error) => alert('게시물 등록에 실패했습니다.'))

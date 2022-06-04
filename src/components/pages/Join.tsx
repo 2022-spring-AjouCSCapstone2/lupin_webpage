@@ -16,7 +16,7 @@ import {
  } from 'react-router-dom';
 import axios from "axios";
 import sha256 from 'crypto-js/sha256';
-import { LOCAL_URL } from '../../variables';
+import { SERVER_URL } from '../../variables';
 import { useSelector } from 'react-redux';
 import { ReducerType } from '../../rootReducer';
 import { emailRegex, pwRegex } from '../../variables';
@@ -82,14 +82,14 @@ export default function Join() {
                 phone
             };
             axios
-                .post(LOCAL_URL + '/users/join', body, {withCredentials: true})
+                .post(SERVER_URL + '/users/join', body, {withCredentials: true})
                 .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     alert('회원가입이 정상적으로 완료되었습니다.');
                     history.push("/login");
                 })
                 .catch((error) => {
-                    console.log(error);
+                    // console.log(error);
                     alert('회원가입에 실패했습니다. 가입 정보를 다시 확인해주세요.');
                 });
         }

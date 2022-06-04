@@ -56,8 +56,9 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
   const endFullTime = endHours * 60 + endMinutes;
   const currentFullTime = (hours === null || minutes === null) ? null : hours * 60 + minutes;
   const minutesGap = currentFullTime === null ? 9999 : startFullTime - currentFullTime;
-  
-  const classOpen = minutesGap <= 10;
+  const classOpen = currentFullTime === null
+                    ? false
+                    : ( minutesGap <= 10 && currentFullTime <= endFullTime );
 
   const timeLeft = () => {
     if(currentFullTime === null) return '로딩중...';
@@ -81,6 +82,7 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
       courseId,
       roomId
     };
+    console.log(`attended room: ${roomId}, on course ${courseId}`);
     dispatch(enterClassRoom(classRoom));
   }
 
@@ -95,10 +97,6 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
   const joinRoomHandler = () => {
     joinRoom(courseId, openRoom, handleRejected);
   }
-
-  // fake
-  const studentClassOpen = true;
-  const professorClassOpen = true;
 
   return (
       <Card
@@ -132,7 +130,7 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
                       user.userType === 'STUDENT'
                       ?
                       (
-                        studentClassOpen
+                        classOpen
                         ?
                         <Button
                           variant="contained"
@@ -152,7 +150,7 @@ export default function LectureCard({ courseData, hours, minutes }: LectureProps
                       )
                       :
                       (
-                      professorClassOpen
+                      classOpen
                       ?
                       <Button
                         variant="contained"

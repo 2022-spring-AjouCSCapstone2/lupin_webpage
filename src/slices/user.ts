@@ -6,15 +6,16 @@ export interface User {
     userType: string,
     email: string,
     userId: number,
-    phone: number
+    phone: number,
+    path: string | null
 }
 
 const user = createSlice({
     name: 'user',
     initialState: {} as User,
     reducers: {
-        setUser(_, action: PayloadAction<User>) {
-            return {...action.payload};
+        setUser(state, action: PayloadAction<User>) {
+            return {...state, ...action.payload};
         },
         setNullUser() {
             return {} as User;

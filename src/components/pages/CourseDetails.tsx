@@ -3,11 +3,10 @@ import Tab from '@mui/material/Tab';
 import PageTitleBanner from '../partials/PageTitleBanner';
 import TabPanel from '../partials/TabPanel';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import CourseDescription from '../partials/CourseDescription';
 import PreviousLectures from '../partials/PreviousLectures';
 import PostBoard from '../partials/PostBoard';
+import StatisticsTable from "../partials/StatisticsTable";
 import { RouteComponentProps } from "react-router";
 import { useState } from 'react';
 import { ReducerType } from '../../rootReducer';
@@ -40,6 +39,7 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
             <Box sx={{ width: '100%', bgcolor: 'background.paper' }}>
                 <Tabs value={tabNumber} onChange={handleChange} centered>
                     <Tab label="수업 상세" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
+                    <Tab label="공지사항" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="강의 노트" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     <Tab label="게시판" sx={{ fontFamily: 'Jua', fontSize: 16 }} />
                     {
@@ -57,21 +57,24 @@ export default function CourseDetails({ match }: RouteComponentProps<MatchParams
                     <CourseDescription id={id} />
                 </TabPanel>
 
-                {/* 이전 수업들 */}
+                {/* 공지사항 */}
                 <TabPanel value={tabNumber} index={1}>
-                    <PreviousLectures />
+                    <PostBoard id={id} postType="NOTICE" />
+                </TabPanel>
+
+                {/* 강의 노트 */}
+                <TabPanel value={tabNumber} index={2}>
+                    <PreviousLectures id={id} />
                 </TabPanel>
 
                 {/* 게시판 */}
-                <TabPanel value={tabNumber} index={2}>
-                    <PostBoard id={id} />
+                <TabPanel value={tabNumber} index={3}>
+                    <PostBoard id={id} postType="FREE" />
                 </TabPanel>
 
                 {/* 학생 관리 */}
-                <TabPanel value={tabNumber} index={3}>
-                    <Container sx={{ display: 'flex', justifyContent: 'center' }}>
-                        <Typography sx={{ display: 'block', my: 10 }}>여기에 디자인 하시면 됩니다.</Typography>
-                    </Container>
+                <TabPanel value={tabNumber} index={4}>
+                    <StatisticsTable id={id} />
                 </TabPanel>
             </Box>
         </Box>
