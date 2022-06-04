@@ -257,30 +257,9 @@ export default function HeaderNav() {
                   프로필
                 </Typography>   
               </MenuItem>
-              <MenuItem key={'my-posts'} onClick={handleCloseUserMenu} sx={{ p: 0 }}>
-                <Typography
-                  key={'my-posts'}
-                  onClick={handleCloseNavMenu}
-                  component={RouterLink}
-                  to={'/my-posts'}
-                  sx={{ 
-                    color: 'inherit',
-                    textTransform: 'none',
-                    textDecoration: 'none',
-                    display: 'block',
-                    backgroundColor: 'transparent',
-                    width: '100%',
-                    py: 1,
-                    pl: 2,
-                    pr: 3
-                  }}
-                >
-                  내 게시물
-                </Typography>   
-              </MenuItem>
               <MenuItem key={'logout'} onClick={handleCloseUserMenu} sx={{ p: 0 }}>
                 <Typography
-                  key={'profile'}
+                  key={'logout'}
                   onClick={handleLogout}
                   sx={{ 
                     color: 'inherit',

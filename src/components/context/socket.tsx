@@ -10,7 +10,8 @@ export interface SocketEventProps {
     connectUserSocket: (
         receiveQuestion: (question: QuestionProps) => void,
         receiveQuiz: (quizData: ReceivedQuizDataProps) => void,
-        handleClassRoomShutDown: () => void) => void,
+        handleClassRoomShutDown: () => void
+        ) => void,
     leaveRoom: ({ roomId }: LeaveRoomProps) => void,
     joinRoom: (courseId: string, openRoom: (roomId: string) => void, handleRejected: () => void) => void,
     makeQuestion: (
@@ -72,20 +73,20 @@ export const socketEvents = {
         handleClassRoomShutDown: () => void) => {
         socket = io(SERVER_URL, {withCredentials: true});
 
-        socket.on("connect", () => {
-            console.log('socket id', socket.id);
-        });
+        // socket.on("connect", () => {
+        //     console.log('socket id', socket.id);
+        // });
 
-        socket.on('newStudent', (data) => {
-            console.log(data);
-        });
+        // socket.on('newStudent', (data) => {
+        //     console.log(data);
+        // });
 
         socket.on('newQuestion', (data) => {
             receiveQuestion(data);
         });
         
         socket.on('quiz', (data) => {
-            console.log(data);
+            // console.log(data);
             receiveQuiz(data);
         });
 
@@ -121,19 +122,19 @@ export const socketEvents = {
     setPoints: ( id: number, point: boolean ) => {
         socket.emit('checkQuestion', { logId: id, point }, ({ status, data }: SocketResponseProps) => {
             if(status === 'failed') alert(data);
-            else console.log('포인트 적용 완료!');
+            // else console.log('포인트 적용 완료!');
         });
     },
     spreadQuiz: (quizData: QuizDataProps) => {
         socket.emit('quiz', quizData, ({ status, data }: SocketResponseProps) => {            
             if(status === 'failed') alert(data);
-            else console.log('퀴즈 출제 완료!');
+            // else console.log('퀴즈 출제 완료!');
         });        
     },
     answerQuiz: (quizData: QuizAnswerProps) => {
         socket.emit('quizAnswer', quizData, ({ status, data }: SocketResponseProps) => {     
             if(status === 'failed') alert(data);
-            else console.log('퀴즈 제출 완료!');
+            // else console.log('퀴즈 제출 완료!');
         });
     }
 }

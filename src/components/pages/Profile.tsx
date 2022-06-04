@@ -75,7 +75,7 @@ export default function Profile() {
       axios
       .patch(SERVER_URL + '/users', body, { withCredentials: true })
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         const updated = {...user, phone: Number(phone)};
         dispatch(setUser(updated));
         alert('전화번호가 등록되었습니다.');
@@ -96,7 +96,7 @@ export default function Profile() {
         axios
         .patch(SERVER_URL + '/users/password', body, { withCredentials: true })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           alert('비밀번호가 변경되었습니다.');
           window.location.reload();
         })
@@ -118,7 +118,7 @@ export default function Profile() {
           withCredentials: true
         })
         .then((res) => {
-          console.log(res);
+          // console.log(res);
           handleClose();
           const updatedUser = {...user, path: res.data.path};
           dispatch(setUser(updatedUser));
@@ -126,7 +126,7 @@ export default function Profile() {
           window.location.reload();
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error);
           handleClose();
           alert('프로필 사진 변경에 실패했습니다.');
         });

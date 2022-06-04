@@ -84,12 +84,12 @@ export default function Join() {
             axios
                 .post(SERVER_URL + '/users/join', body, {withCredentials: true})
                 .then((res) => {
-                    console.log(res);
+                    // console.log(res);
                     alert('회원가입이 정상적으로 완료되었습니다.');
                     history.push("/login");
                 })
                 .catch((error) => {
-                    console.log(error);
+                    // console.log(error);
                     alert('회원가입에 실패했습니다. 가입 정보를 다시 확인해주세요.');
                 });
         }

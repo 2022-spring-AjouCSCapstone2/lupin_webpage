@@ -44,7 +44,7 @@ export default function Login() {
         axios
             .post(SERVER_URL + '/users/login', body, { withCredentials: true })
             .then((resLogin) => {
-                console.log('resLogin', resLogin);
+                // console.log('resLogin', resLogin);
                 axios
                 .all([
                     axios.get(SERVER_URL + '/courses/today', {withCredentials: true}),
@@ -52,8 +52,8 @@ export default function Login() {
                 ])
                 .then(
                     axios.spread((resToday, resAll) => {
-                        console.log('resToday', resToday);
-                        console.log('resAll', resAll);
+                        // console.log('resToday', resToday);
+                        // console.log('resAll', resAll);
                         dispatch(setCourses(resAll.data));
                         dispatch(setTodaysLecture(resToday.data));
                         dispatch(setUser(resLogin.data));
@@ -61,13 +61,13 @@ export default function Login() {
                     })
                 )
                 .catch((error) => {
-                    console.log(error);
+                    // console.log(error);
                     alert('사용자 정보를 불러오는데 실패했습니다.');
                     window.location.reload();
                 });
             })
             .catch((error) => {
-                console.log(error);
+                // console.log(error);
                 alert('로그인에 실패했습니다. 로그인 정보를 다시 확인해주세요.');
                 window.location.reload();
             });

@@ -6,7 +6,6 @@ import Box from "@mui/material/Box";
 import HeaderNav from './partials/HeaderNav';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
-import MyPosts from './pages/MyPosts';
 import Courses from './pages/Courses';
 import CourseDetails from './pages/CourseDetails';
 import NewPost from './pages/NewPost';
@@ -89,7 +88,6 @@ export default function PrivateRoute() {
                         <Switch>
                             <Route path="/" exact component={Home} />
                             <Route path="/profile" exact component={Profile} />
-                            <Route path="/my-posts" exact component={MyPosts} />
                             <Route path="/introduce" exact component={Introduce} />
                             <Route path="/courses" exact component={Courses} />
                             <Route path="/courses/:id" exact component={CourseDetails} />

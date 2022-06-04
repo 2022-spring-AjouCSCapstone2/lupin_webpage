@@ -3,8 +3,6 @@ import Tab from '@mui/material/Tab';
 import PageTitleBanner from '../partials/PageTitleBanner';
 import TabPanel from '../partials/TabPanel';
 import Box from '@mui/material/Box';
-import Container from '@mui/material/Container';
-import Typography from '@mui/material/Typography';
 import CourseDescription from '../partials/CourseDescription';
 import PreviousLectures from '../partials/PreviousLectures';
 import PostBoard from '../partials/PostBoard';

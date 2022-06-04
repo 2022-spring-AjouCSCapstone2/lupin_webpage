@@ -1,7 +1,5 @@
 export const SERVER_URL = 'https://api.lupin.today';
 // export const SERVER_URL = 'http://localhost:5000';
-// export const CLIENT_URL = 'http://3.34.161.32:3000';
-// export const LOCAL_URL = 'http://localhost:5000';
 export const pwRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[$@$!%*#?~^<>,.&+=])[A-Za-z\d$@$!%*#?~^<>,.&+=]{8,15}$/;
 export const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*))@((([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 export const getToday = () => {
@@ -69,4 +67,24 @@ export const getKoreanDay = (day: string) => {
             break;
     }
     return koreanDay;
+}
+export const compareDate = (a: string, b: string) => {
+    const splitA = a.split('-').map(e => Number(e));
+    const splitB = b.split('-').map(e => Number(e));
+    
+    if(splitA[0] < splitB[0]) return 1;
+    else if(splitA[0] > splitB[0]) return -1;
+    else {
+        if(splitA[1] < splitB[1]) return 1;
+        else if(splitA[1] > splitB[1]) return -1;
+        else {
+            if(splitA[2] < splitB[2]) return 1;
+            else if(splitA[2] > splitB[2]) return -1;
+            else return 0;
+        }
+    }
+}
+export const dateInKorean = (date: string) => {
+    const splited = date.split('-');
+    return `${splited[0]}년 ${splited[1]}월 ${splited[2]}일`;
 }

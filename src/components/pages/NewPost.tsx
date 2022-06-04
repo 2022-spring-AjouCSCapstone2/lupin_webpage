@@ -75,7 +75,7 @@ export default function NewPost({ match }: RouteComponentProps<MatchParams>) {
         axios
         .post(SERVER_URL + url, body, {withCredentials: true})
         .then((res) => {
-            console.log(res);
+            // console.log(res);
             history.push(`/courses/${id}`);
         })
         .catch((error) => alert('게시물 등록에 실패했습니다.'))
