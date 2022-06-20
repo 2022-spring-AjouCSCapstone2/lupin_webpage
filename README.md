@@ -34,24 +34,24 @@
 
 ### 실시간 강의
 
-- 강의 생성
+#### 강의 생성
 ![image](https://user-images.githubusercontent.com/76900250/174597875-6d15e298-0384-410a-afe5-b7aa0bc4f5e1.png)
 
-- 익명(기명) 질문
+#### 익명(기명) 질문
 ![image](https://user-images.githubusercontent.com/76900250/174597886-038c5b43-9d32-409f-80e8-8574677421d6.png)
 
-- 퀴즈 출제 & 정답 제출
+#### 퀴즈 출제 & 정답 제출
 ![image](https://user-images.githubusercontent.com/76900250/174597901-6412a978-7242-4455-9b8c-0172ebf29f50.png)
 
-- 강의 종료
+#### 강의 종료
 ![image](https://user-images.githubusercontent.com/76900250/174598048-da1b4595-673c-41de-aa90-e8c19792eff4.png)
 
 ### 강의별 게시판
 
-- 게시물 목록
+#### 게시물 목록
 ![image](https://user-images.githubusercontent.com/76900250/174598079-e677e344-bc60-4b09-9cd6-734c72478a9b.png)
 
-- 게시물 조회 & 댓글 작성
+#### 게시물 조회 & 댓글 작성
 ![image](https://user-images.githubusercontent.com/76900250/174598229-f31bc122-5208-467b-8a52-6a3892c23c37.png)
 
 ### 강의노트
