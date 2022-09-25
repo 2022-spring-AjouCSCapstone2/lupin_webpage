@@ -3,7 +3,7 @@
 - Lupin; 대면 수업 도우미
 - 대면 수업에서도 비대면 수업의 장점을 활용할 수 있는 통합 온라인 서비스
 - AJOU SOFTCON 2022-1 장려상 수상
-- 소개 영상: https://softcon.ajou.ac.kr/works/works.asp?uid=605
+- 소개 영상: https://softcon.ajou.ac.kr/works/works_prev.asp?uid=605&wTerm=2022-1
 - 현재 서버 운영 X
 
 
